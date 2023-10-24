@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,6 +10,9 @@ public class Player : MonoBehaviour
     [Header("")]
     public Vector2 inputVec;
     public float speed;
+    public GameObject SlashAttack;
+    public Scanner scanner;
+
     Rigidbody2D rigid;
     Transform transform;
     Animator anim;
@@ -17,6 +22,7 @@ public class Player : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         transform = GetComponent<Transform>();
         anim = GetComponent<Animator>();
+        scanner = GetComponent<Scanner>();
     }
 
     void Start()
@@ -59,10 +65,17 @@ public class Player : MonoBehaviour
         {
             anim.SetTrigger("Attack");
         }
+
     }
 
     void OnMove(InputValue value)
     {
         inputVec = value.Get<Vector2>();
+    }
+
+    public void Attack()
+    {
+        anim.SetTrigger("Attack");
+        Instantiate(SlashAttack, transform);
     }
 }

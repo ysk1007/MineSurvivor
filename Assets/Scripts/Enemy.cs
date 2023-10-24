@@ -14,7 +14,7 @@ public class Enemy : MonoBehaviour
     bool Targeting;
 
     Rigidbody2D rigid;
-    Transform transform;
+    public static Transform transform;
     Animator anim;
 
 
@@ -31,7 +31,20 @@ public class Enemy : MonoBehaviour
             return;
         if (Targeting)
         {
-            anim.SetFloat("RunState", 0.5f);
+            float animspeed = 0;
+            switch (monsterType)
+            {
+                case 0:
+                    animspeed = 0.5f;
+                    break;
+                case 1:
+                    animspeed = 0.3f;
+                    break;
+                case 2:
+                    animspeed = 0.2f;
+                    break;
+            }
+            anim.SetFloat("RunState", animspeed);
         }
         else
         {
@@ -72,5 +85,27 @@ public class Enemy : MonoBehaviour
         speed = data.speed;
         maxHp = data.hp;
         currentHp = data.hp;
+    }
+
+    void OnTriggerEnter2D(Collider2D collision) //피격 감지
+    {
+        if (!collision.CompareTag("Slash"))
+            return;
+
+        currentHp -= collision.GetComponent<Slash>().damage;
+
+        if (currentHp > 0) //살아있음
+        {
+
+        }
+        else //죽음
+        {
+            Dead();
+        }
+    }
+
+    void Dead()
+    {
+        gameObject.SetActive(false);
     }
 }

@@ -10,6 +10,8 @@ public class PoolManager : MonoBehaviour
     [Header("풀 담당 리스트")]
     List<GameObject>[] pools;
 
+    public Transform player;
+
     void Awake()
     {
         pools = new List<GameObject>[prefabs.Length];
@@ -20,7 +22,7 @@ public class PoolManager : MonoBehaviour
         }
     }
 
-    public GameObject Get(int index)
+    public GameObject Get(int index, bool mine)
     {
         GameObject select = null;
 
@@ -39,8 +41,13 @@ public class PoolManager : MonoBehaviour
         // 없다면
         if (select == null)
         {
+            Transform trans = transform;
+            if (mine)
+            {
+                trans = player;
+            }
             // 생성하고 할당
-            select = Instantiate(prefabs[index], transform);
+            select = Instantiate(prefabs[index], trans);
             pools[index].Add(select);
         }
 
