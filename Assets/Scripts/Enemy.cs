@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Enemy : MonoBehaviour
 {
@@ -14,20 +15,26 @@ public class Enemy : MonoBehaviour
     bool Targeting;
 
     Rigidbody2D rigid;
+    Collider2D coll;
     public static Transform transform;
+    SortingGroup sort;
     Animator anim;
+    WaitForFixedUpdate wait;
 
 
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
+        coll = GetComponent<Collider2D>();
         transform = GetComponent<Transform>();
         anim = GetComponent<Animator>();
+        wait = new WaitForFixedUpdate();
+        sort = GetComponent<SortingGroup>();
     }
 
     void FixedUpdate()
     {
-        if (!isLive)
+        if (!isLive || anim.GetBool("Hit"))
             return;
         if (Targeting)
         {
@@ -63,11 +70,11 @@ public class Enemy : MonoBehaviour
     {
         if (Dir < 0)
         {
-            transform.localScale = new Vector3(1, transform.localScale.y, transform.localScale.z);
+            this.gameObject.transform.localScale = new Vector3(1, transform.localScale.y, transform.localScale.z);
         }
         else if (Dir > 0)
         {
-            transform.localScale = new Vector3(-1, transform.localScale.y, transform.localScale.z);
+            this.gameObject.transform.localScale = new Vector3(-1, transform.localScale.y, transform.localScale.z);
         }
     }
 
@@ -75,6 +82,9 @@ public class Enemy : MonoBehaviour
     {
         target = GameManager.instance.player.GetComponent<Rigidbody2D>();
         isLive = true;
+        coll.enabled = true;
+        rigid.simulated = true;
+        sort.sortingOrder = 5;
         Targeting = true;
         currentHp = maxHp;
     }
@@ -89,19 +99,37 @@ public class Enemy : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision) //피격 감지
     {
-        if (!collision.CompareTag("Slash"))
+        if (!collision.CompareTag("Slash") || !isLive)
             return;
 
         currentHp -= collision.GetComponent<Slash>().damage;
 
+        StartCoroutine(KnockBack(collision.GetComponent<Slash>().dir));
         if (currentHp > 0) //살아있음
         {
-
+            anim.SetFloat("RunState", 0.7f);
+            anim.SetBool("Hit", true);
         }
         else //죽음
         {
-            Dead();
+            isLive = false;
+            coll.enabled = false;
+            rigid.simulated = false;
+            sort.sortingOrder = 4;
+            anim.SetTrigger("Die");
+            GameManager.instance.kill++;
+            GameManager.instance.GetExp();
         }
+    }
+
+    IEnumerator KnockBack(Vector3 dir)
+    {
+        yield return wait; // 다음 하나의 물리 프레임 딜레이
+        Vector3 playerPos = GameManager.instance.player.transform.position;
+        Vector3 dirVec = transform.position - playerPos;
+        rigid.AddForce(dir * 1.5f, ForceMode2D.Impulse);
+        yield return new WaitForSeconds(0.5f);
+        anim.SetBool("Hit", false);
     }
 
     void Dead()

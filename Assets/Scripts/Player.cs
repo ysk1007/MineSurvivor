@@ -76,6 +76,5 @@ public class Player : MonoBehaviour
     public void Attack()
     {
         anim.SetTrigger("Attack");
-        Instantiate(SlashAttack, transform);
     }
 }
