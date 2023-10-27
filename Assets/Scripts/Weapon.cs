@@ -12,25 +12,29 @@ public class Weapon : MonoBehaviour
     public float speed;
 
     public float timer;
-    Player player;
+    public Player player;
 
     public Transform center; // 원 중심 위치
-    public float radius = 3.0f; // 원 반지름
+    public float radius = 1.0f; // 원 반지름
 
-    private void Awake()
+    void Awake()
     {
-        player = GetComponentInParent<Player>();
+        player = GameManager.instance.player;
+        center = player.AttackRange;
     }
 
-    void Start()
+/*    void Start()
     {
         Init();
-    }
+    }*/
 
     public void LevelUp(float damage, int count)
     {
         this.damage = damage;
         this.count += count;
+
+        //특정 함수 호출을 모든 자식에게 방송하는 함수
+        player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
     }
 
     void Update()
@@ -50,8 +54,31 @@ public class Weapon : MonoBehaviour
         }  
     }
 
-    public void Init()
+    public void Init(ItemData data)
     {
+        player = GameManager.instance.player;
+        center = player.AttackRange.transform;
+        // Basic Set
+        name = "Weapon " + data.itemId;
+        transform.parent = player.transform;
+        this.transform.localPosition = new Vector3(0.5f,0,0);
+
+        // Property Set
+        id = data.itemId;
+        damage = data.baseDamge;
+        count = data.baseCount;
+        speed = data.baseCount;
+
+        for (int i = 0; i < GameManager.instance.pool.prefabs.Length; i++)
+        {
+            if (data.projectile == GameManager.instance.pool.prefabs[i])
+            {
+                Debug.Log(i + "번째 인덱스");
+                prefabId = i;
+                break;
+            }
+        }
+
         switch (id)
         {
             case 0:
@@ -66,6 +93,9 @@ public class Weapon : MonoBehaviour
             default:
                 break;
         }
+
+        //특정 함수 호출을 모든 자식에게 방송하는 함수
+        player.BroadcastMessage("ApplyGear",SendMessageOptions.DontRequireReceiver); 
     }
 
     void Batch()
@@ -100,8 +130,6 @@ public class Weapon : MonoBehaviour
         // 해당 벡터를 원의 반지름만큼 정규화하여 가장 가까운 점을 계산하여 이동
         Vector2 closestPointOnCircle = circleCenter + toObject.normalized * radius;
 
-        // 물체를 가장 가까운 점으로 이동
-        this.gameObject.transform.position = closestPointOnCircle;
 
         // 물체를 가장 가까운 점 방향으로 회전시킴
         Vector2 lookDirection = closestPointOnCircle - (Vector2)this.gameObject.transform.position;
@@ -109,6 +137,9 @@ public class Weapon : MonoBehaviour
         //this.gameObject.transform.rotation = Quaternion.Euler(0, 0, angle);
 
         Transform slash = GameManager.instance.pool.Get(prefabId, true).transform;
+        // 물체를 가장 가까운 점으로 이동
+        slash.transform.position = closestPointOnCircle;
+        slash.transform.parent = this.transform;
         slash.GetComponent<Slash>().Init(damage, count, dir);
         slash.rotation = Quaternion.FromToRotation(Vector3.up, toObject.normalized);
     }

@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     public Vector2 inputVec;
     public float speed;
     public GameObject SlashAttack;
+    public Transform AttackRange;
     public Scanner scanner;
 
     Rigidbody2D rigid;
