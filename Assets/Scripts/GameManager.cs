@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -8,6 +9,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     [Header("# 게임 컨트롤")]
+    public bool isLive;
     public float gameTime;
     public float maxGameTime = 2 * 10f;
 
@@ -22,6 +24,7 @@ public class GameManager : MonoBehaviour
     [Header("# 게임 오브젝트")]
     public Player player;
     public PoolManager pool;
+    public LevelUp uiLevelUp;
     
     void Awake()
     {
@@ -31,10 +34,19 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         curHp = maxHp;
+
+        //임시
+        uiLevelUp.Select(0);
     }
 
     void Update()
     {
+        if (!isLive)
+        {
+            return;
+        }
+
+        //게임 시간
         gameTime += Time.deltaTime;
 
         if (gameTime > maxGameTime)
@@ -47,10 +59,23 @@ public class GameManager : MonoBehaviour
     {
         exp++;
 
-        if (exp == nextExp[level])
+        if (exp == nextExp[Mathf.Min(level, nextExp.Length -1)])
         {
             level++;
             exp = 0;
+            uiLevelUp.Show();
         }
+    }
+
+    public void Pause()
+    {
+        isLive = false;
+        Time.timeScale = 0;
+    }
+
+    public void Resume()
+    {
+        isLive = true;
+        Time.timeScale = 1;
     }
 }

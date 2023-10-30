@@ -34,6 +34,9 @@ public class Enemy : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!GameManager.instance.isLive)
+            return;
+
         if (!isLive || anim.GetBool("Hit"))
             return;
         if (Targeting)
@@ -68,6 +71,9 @@ public class Enemy : MonoBehaviour
 
     void LateUpdate()
     {
+        if (!GameManager.instance.isLive)
+            return;
+
         if (Dir < 0)
         {
             this.gameObject.transform.localScale = new Vector3(1, transform.localScale.y, transform.localScale.z);

@@ -34,19 +34,28 @@ public class Player : MonoBehaviour
     
     void FixedUpdate()
     {
+        if (!GameManager.instance.isLive)
+            return;
+
         Vector2 nextVec = inputVec * speed * Time.fixedDeltaTime;
         rigid.MovePosition(rigid.position + nextVec);
     }
 
     void Update()
     {
-        //inputVec.x = Input.GetAxisRaw("Horizontal");
-        //inputVec.y = Input.GetAxisRaw("Vertical");
+        if (!GameManager.instance.isLive)  
+            return;
+
+        inputVec.x = Input.GetAxisRaw("Horizontal");
+        inputVec.y = Input.GetAxisRaw("Vertical");
     }
 
     void LateUpdate()
     {
-        if(inputVec.x != 0 || inputVec.y != 0)
+        if (!GameManager.instance.isLive)
+            return;
+
+        if (inputVec.x != 0 || inputVec.y != 0)
         {
             anim.SetFloat("RunState",0.35f);
         }
