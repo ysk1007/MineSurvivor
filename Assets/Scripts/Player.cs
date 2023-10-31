@@ -87,4 +87,23 @@ public class Player : MonoBehaviour
     {
         anim.SetTrigger("Attack");
     }
+
+    void OnCollisionStay2D(Collision2D collision)
+    {
+        if (!GameManager.instance.isLive)
+            return;
+
+        GameManager.instance.curHp -= Time.deltaTime * 10;
+
+        if (GameManager.instance.curHp < 0)
+        {
+            for (int i = 3; i < transform.childCount; i++)
+            {
+                transform.GetChild(i).gameObject.SetActive(false);
+            }
+
+            anim.SetTrigger("Die");
+            GameManager.instance.GameOver();
+        }
+    }
 }
