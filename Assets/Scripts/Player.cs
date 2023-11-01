@@ -20,15 +20,20 @@ public class Player : MonoBehaviour
 
     void Awake()
     {
+        /*int id = GameManager.instance.playerID;
+        rigid = GetComponentsInChildren<Rigidbody2D>()[id];
+        transform = GetComponentsInChildren<Transform>()[id];
+        anim = GetComponentsInChildren<Animator>()[id];
+        scanner = GetComponentsInChildren<Scanner>()[id];*/
         rigid = GetComponent<Rigidbody2D>();
         transform = GetComponent<Transform>();
         anim = GetComponent<Animator>();
         scanner = GetComponent<Scanner>();
     }
 
-    void Start()
+    void OnEnable()
     {
-        
+        speed *= Character.Speed;
     }
     
     

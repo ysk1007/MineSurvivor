@@ -105,12 +105,25 @@ public class Enemy : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision) //피격 감지
     {
-        if (!collision.CompareTag("Slash") || !isLive)
+        if ((!collision.CompareTag("Slash") && !collision.CompareTag("Expolsion")) || !isLive)
             return;
 
-        currentHp -= collision.GetComponent<Slash>().damage;
+        switch (collision.tag)
+        {
+            case "Slash":
+                Debug.Log("칼 맞음");
+                currentHp -= collision.GetComponent<Slash>().damage;
+                StartCoroutine(KnockBack(collision.GetComponent<Slash>().dir));
+                break;
+            case "Expolsion":
+                Debug.Log("폭탄 맞음");
+                currentHp -= collision.GetComponent<Expolsion>().damage;
+                break;
+            default: 
+                currentHp -= 0; 
+                break;
+        }
 
-        StartCoroutine(KnockBack(collision.GetComponent<Slash>().dir));
         if (currentHp > 0) //살아있음
         {
             anim.SetFloat("RunState", 0.7f);

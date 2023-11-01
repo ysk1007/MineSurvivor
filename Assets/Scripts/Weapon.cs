@@ -30,7 +30,7 @@ public class Weapon : MonoBehaviour
 
     public void LevelUp(float damage, int count)
     {
-        this.damage = damage;
+        this.damage = damage * Character.Damage;
         this.count += count;
 
         //특정 함수 호출을 모든 자식에게 방송하는 함수
@@ -53,6 +53,15 @@ public class Weapon : MonoBehaviour
                     SlashAttack();
                 }
                 break;
+            case 1:
+                timer += Time.deltaTime;
+
+                if (timer > speed)
+                {
+                    timer = 0f;
+                    DynamiteAttack();
+                }
+                break;
         }  
     }
 
@@ -63,19 +72,21 @@ public class Weapon : MonoBehaviour
         // Basic Set
         name = "Weapon " + data.itemId;
         transform.parent = player.transform;
-        this.transform.localPosition = new Vector3(0.5f,0,0);
+        if (data.itemType == ItemData.ItemType.Pickax)
+        {
+            this.transform.localPosition = new Vector3(0.5f, 0, 0);
+        }
 
         // Property Set
         id = data.itemId;
-        damage = data.baseDamge;
-        count = data.baseCount;
+        damage = data.baseDamge * Character.Damage;
+        count = data.baseCount + Character.Count;
         speed = data.baseCount;
 
         for (int i = 0; i < GameManager.instance.pool.prefabs.Length; i++)
         {
             if (data.projectile == GameManager.instance.pool.prefabs[i])
             {
-                Debug.Log(i + "번째 인덱스");
                 prefabId = i;
                 break;
             }
@@ -84,9 +95,10 @@ public class Weapon : MonoBehaviour
         switch (id)
         {
             case 0:
-                speed = 1f;
+                speed = 1f * Character.WeaponRate;
                 break;
             case 1:
+                speed = 1.5f * Character.WeaponRate;
                 break;
             case 2:
                 break;
@@ -117,9 +129,7 @@ public class Weapon : MonoBehaviour
         dir = dir.normalized; //방향은 유지 크기는 1로 고정
 
         player.Attack();
-        //this.gameObject.transform.position = player.scanner.nearestTarget.position;
-        //this.gameObject.transform.rotation = Quaternion.FromToRotation(Vector3.up, dir); //방향으로 돌림 (축,방향)
-        //slash.rotation = Quaternion.FromToRotation(Vector3.up, dir); //방향으로 돌림 (축,방향)
+
         // 물체의 위치
         Vector2 objectPosition = player.scanner.nearestTarget.position;
 
@@ -132,17 +142,30 @@ public class Weapon : MonoBehaviour
         // 해당 벡터를 원의 반지름만큼 정규화하여 가장 가까운 점을 계산하여 이동
         Vector2 closestPointOnCircle = circleCenter + toObject.normalized * radius;
 
-
-        // 물체를 가장 가까운 점 방향으로 회전시킴
-        Vector2 lookDirection = closestPointOnCircle - (Vector2)this.gameObject.transform.position;
-        float angle = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
-        //this.gameObject.transform.rotation = Quaternion.Euler(0, 0, angle);
-
         Transform slash = GameManager.instance.pool.Get(prefabId, true).transform;
         // 물체를 가장 가까운 점으로 이동
         slash.transform.position = closestPointOnCircle;
         slash.transform.parent = this.transform;
         slash.GetComponent<Slash>().Init(damage, count, dir);
         slash.rotation = Quaternion.FromToRotation(Vector3.up, toObject.normalized);
+    }
+
+    void DynamiteAttack()
+    {
+        if (!player.scanner.nearestTarget)
+            return;
+
+        Vector3 targetPos = player.scanner.nearestTarget.position;
+        Vector3 dir = targetPos - transform.position;
+        dir = dir.normalized; //방향은 유지 크기는 1로 고정
+
+        player.Attack();
+
+        Transform Dynamite = GameManager.instance.pool.Get(prefabId, true).transform;
+        // 물체를 가장 가까운 점으로 이동
+        Dynamite.position = transform.position;
+        //Dynamite.transform.parent = GameManager.instance.pool.transform;
+        Dynamite.rotation = Quaternion.FromToRotation(Vector3.up, dir.normalized);
+        Dynamite.GetComponent<Dynamite>().Init(damage, count, dir);
     }
 }

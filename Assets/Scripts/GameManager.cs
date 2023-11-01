@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,15 +17,19 @@ public class GameManager : MonoBehaviour
     public float maxGameTime = 2 * 10f;
 
     [Header("# 플레이어 정보")]
+    public int playerID;
     public float curHp;
     public float maxHp = 100;
     public int level;
     public int kill;
     public int exp;
     public int[] nextExp = { 10, 30, 60, 100, 150, 210, 280, 360, 450, 600 };
+    public Weapon weapon;
+    public ItemData[] data;
 
     [Header("# 게임 오브젝트")]
     public Player player;
+    public GameObject[] players;
     public PoolManager pool;
     public LevelUp uiLevelUp;
     public Result uiResult;
@@ -35,12 +40,26 @@ public class GameManager : MonoBehaviour
         instance = this;
     }
     // Start is called before the first frame update
-    public void GameStart()
+    public void GameStart(int id)
     {
+        playerID = id;
         curHp = maxHp;
 
-        //임시
-        uiLevelUp.Select(0);
+        for (int i = 0; i < players.Length; i++)
+        {
+            if (i == id)
+            {
+                players[i].gameObject.SetActive(true);
+                players[i].gameObject.transform.SetParent(player.transform);
+                players[i].gameObject.transform.SetAsFirstSibling();
+                break;
+            }
+        }
+        player.gameObject.SetActive(true);
+        //uiLevelUp.Select(playerID % 2); //기본 무기 지급
+        GameObject newWeapon = new GameObject();
+        weapon = newWeapon.AddComponent<Weapon>();
+        weapon.Init(data[id]);
         isLive = true;
         Resume();
     }
