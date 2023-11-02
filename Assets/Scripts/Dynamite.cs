@@ -13,10 +13,17 @@ public class Dynamite : MonoBehaviour
     Rigidbody2D rigid;
     public GameObject Expolsion;
     public Transform pos;
+    public float rotationSpeed = 360.0f; // 초당 회전 속도 (90도/초로 설정)
 
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
+    }
+
+    void Update()
+    {
+        // 오브젝트를 z축 주위로 회전
+        transform.Rotate(Vector3.forward * rotationSpeed * Time.deltaTime);
     }
 
     public void Init(float damage, int per, Vector3 dir)
@@ -48,7 +55,7 @@ public class Dynamite : MonoBehaviour
 
     void OnEnable() //스크립트가 활성화 될 때 호출
     {
-        Invoke("SelfOff", 7f);
+        //Invoke("SelfOff", 7f);
     }
 
     void SelfOff()
