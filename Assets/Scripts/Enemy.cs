@@ -128,6 +128,7 @@ public class Enemy : MonoBehaviour
         {
             anim.SetFloat("RunState", 0.7f);
             anim.SetBool("Hit", true);
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.Hit);
         }
         else //Á×À½
         {
@@ -138,6 +139,9 @@ public class Enemy : MonoBehaviour
             anim.SetTrigger("Die");
             GameManager.instance.kill++;
             GameManager.instance.GetExp();
+
+            if (GameManager.instance.isLive)
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.Dead);
         }
     }
 

@@ -148,6 +148,8 @@ public class Weapon : MonoBehaviour
         slash.transform.parent = this.transform;
         slash.GetComponent<Slash>().Init(damage, count, dir);
         slash.rotation = Quaternion.FromToRotation(Vector3.up, toObject.normalized);
+
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Melee);
     }
 
     void DynamiteAttack()
@@ -167,5 +169,7 @@ public class Weapon : MonoBehaviour
         //Dynamite.transform.parent = GameManager.instance.pool.transform;
         Dynamite.rotation = Quaternion.FromToRotation(Vector3.up, dir.normalized);
         Dynamite.GetComponent<Dynamite>().Init(damage, count, dir);
+
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);
     }
 }
