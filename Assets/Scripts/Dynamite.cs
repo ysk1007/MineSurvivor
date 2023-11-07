@@ -63,4 +63,11 @@ public class Dynamite : MonoBehaviour
         Debug.Log("Á¾·á");
         gameObject.SetActive(false);
     }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (!collision.CompareTag("Area") || per == -1)
+            return;
+        gameObject.SetActive(false);
+    }
 }

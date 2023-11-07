@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - Slash
   - Expolsion
+  - NestedScrollManager
   layers:
   - Default
   - TransparentFX
