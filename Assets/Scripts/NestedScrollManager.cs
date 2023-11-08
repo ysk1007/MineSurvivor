@@ -24,6 +24,7 @@ public class NestedScrollManager : MonoBehaviour, IBeginDragHandler, IDragHandle
         // 거리에 따라 0~1인 pos대입
         distance = 1f / (SIZE - 1);
         for (int i = 0; i < SIZE; i++) pos[i] = distance * i;
+        TabClick(2);
     }
 
     float SetPos()
