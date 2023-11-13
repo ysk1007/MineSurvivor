@@ -12,7 +12,7 @@ public class NestedScrollManager : MonoBehaviour, IBeginDragHandler, IDragHandle
     public Slider tabSlider;
     public RectTransform[] BtnRect, BtnImageRect;
 
-    const int SIZE = 4; //컨텐츠 화면 수
+    const int SIZE = 5; //컨텐츠 화면 수
     float[] pos = new float[SIZE]; //페이지 별 스크롤 뷰 value 값
     float distance, curPos, targetPos; //화면 간 간격, 현재 페이지 위치, 넘어갈 페이지 위치
     bool isDrag; //드래그 중인가 확인
@@ -24,6 +24,9 @@ public class NestedScrollManager : MonoBehaviour, IBeginDragHandler, IDragHandle
         // 거리에 따라 0~1인 pos대입
         distance = 1f / (SIZE - 1);
         for (int i = 0; i < SIZE; i++) pos[i] = distance * i;
+        GetComponent<ScrollRect>().horizontalScrollbar.value = 0.5f;
+        scrollbar.value = 0.5f;
+        tabSlider.value = 0.5f;
         TabClick(2);
     }
 
