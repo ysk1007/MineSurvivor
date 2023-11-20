@@ -121,17 +121,16 @@ public class Weapon : MonoBehaviour
 
     void SlashAttack()
     {
-        if (!player.scanner.nearestTarget)
+        if (!player.scanner.FirstTarget)
             return;
-
-        Vector3 targetPos = player.scanner.nearestTarget.position;
+        Vector3 targetPos = player.scanner.FirstTarget.position;
         Vector3 dir = targetPos - transform.position;
         dir = dir.normalized; //방향은 유지 크기는 1로 고정
 
         player.Attack();
 
         // 물체의 위치
-        Vector2 objectPosition = player.scanner.nearestTarget.position;
+        Vector2 objectPosition = player.scanner.FirstTarget.position;
 
         // 원의 중심 위치
         Vector2 circleCenter = center.position;
@@ -154,10 +153,10 @@ public class Weapon : MonoBehaviour
 
     void DynamiteAttack()
     {
-        if (!player.scanner.nearestTarget)
+        if (!player.scanner.FirstTarget)
             return;
 
-        Vector3 targetPos = player.scanner.nearestTarget.position;
+        Vector3 targetPos = player.scanner.FirstTarget.position;
         Vector3 dir = targetPos - transform.position;
         dir = dir.normalized; //방향은 유지 크기는 1로 고정
 

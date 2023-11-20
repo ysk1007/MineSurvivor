@@ -40,12 +40,11 @@ public class Dynamite : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Enemy") || per == -1)
+        if (!collision.CompareTag("Enemy") && !collision.CompareTag("Bricks")  || per == -1)
             return;
-
         per--;
 
-        if (per == -1)
+        if (per == 0)
         {
             rigid.velocity = Vector2.zero;
             Instantiate(Expolsion, pos.position, Quaternion.identity);

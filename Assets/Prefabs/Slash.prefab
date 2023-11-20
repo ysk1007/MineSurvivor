@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3527731803148446999}
   - component: {fileID: 4351924128467749665}
   - component: {fileID: 4710273553494356056}
-  - component: {fileID: 303919977101526464}
+  - component: {fileID: 8799449663626126128}
   m_Layer: 0
   m_Name: Slash
   m_TagString: Slash
@@ -99,8 +99,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8882ab765a5f1054fbb99da29ee4a695, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whatisPlatform:
+    serializedVersion: 2
+    m_Bits: 128
+  circleCollider2D: {fileID: 8799449663626126128}
   damage: 55
   per: 0
+  dir: {x: 0, y: 0, z: 0}
 --- !u!95 &4710273553494356056
 Animator:
   serializedVersion: 5
@@ -122,8 +127,8 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!61 &303919977101526464
-BoxCollider2D:
+--- !u!58 &8799449663626126128
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -154,16 +159,6 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.125, y: 2.375}
-    newSize: {x: 2.125, y: 2.375}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_Offset: {x: 0, y: 0.2}
   serializedVersion: 2
-  m_Size: {x: 2, y: 0.8}
-  m_EdgeRadius: 0
+  m_Radius: 1.1
