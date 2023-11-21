@@ -19,7 +19,7 @@ public class Expolsion : MonoBehaviour
     void OnEnable() //스크립트가 활성화 될 때 호출
     {
         DestroryArea();
-        Invoke("SelfOff", 2f);
+        Invoke("SelfOff", 1.1f);
     }
 
     void SelfOff()

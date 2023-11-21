@@ -123,9 +123,11 @@ public class Weapon : MonoBehaviour
     {
         if (!player.scanner.FirstTarget)
             return;
-        Vector3 targetPos = player.scanner.FirstTarget.position;
+        /*Vector3 targetPos = player.scanner.FirstTarget.position;
         Vector3 dir = targetPos - transform.position;
-        dir = dir.normalized; //방향은 유지 크기는 1로 고정
+        dir = dir.normalized; //방향은 유지 크기는 1로 고정*/
+
+        Vector2 dir = player.scanner.dir;
 
         player.Attack();
 
@@ -156,9 +158,11 @@ public class Weapon : MonoBehaviour
         if (!player.scanner.FirstTarget)
             return;
 
-        Vector3 targetPos = player.scanner.FirstTarget.position;
+        /*Vector3 targetPos = player.scanner.FirstTarget.position;
         Vector3 dir = targetPos - transform.position;
-        dir = dir.normalized; //방향은 유지 크기는 1로 고정
+        dir = dir.normalized; //방향은 유지 크기는 1로 고정*/
+
+        Vector3 dir = player.scanner.dir;
 
         player.Attack();
 

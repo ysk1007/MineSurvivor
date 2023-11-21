@@ -95,7 +95,7 @@ public class Player : MonoBehaviour
 
     void OnCollisionStay2D(Collision2D collision)
     {
-        if (!GameManager.instance.isLive)
+        if (!collision.transform.CompareTag("Enemy") || !GameManager.instance.isLive)
             return;
 
         GameManager.instance.curHp -= Time.deltaTime * 10;

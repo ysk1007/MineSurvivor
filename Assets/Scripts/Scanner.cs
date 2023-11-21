@@ -11,6 +11,7 @@ public class Scanner : MonoBehaviour
     public Transform nearestTarget;
     public Transform nearestBrick;
     public Transform FirstTarget;
+    public Vector2 dir;
 
     Player player;
 
@@ -34,6 +35,23 @@ public class Scanner : MonoBehaviour
         else if(nearestTarget == null && nearestBrick != null)
         {
             FirstTarget = nearestBrick;
+        }
+
+        if (player != null && FirstTarget != null)
+        {
+            Vector2 pointOnCollider1;
+            Vector2 pointOnCollider2;
+
+            float distance = FindClosestDistance(player.GetComponent<Collider2D>(), FirstTarget.GetComponent<Collider2D>(), out pointOnCollider1, out pointOnCollider2);
+            Debug.Log("Distance between Object1 and Object2: " + distance);
+
+            Vector2 direction = pointOnCollider2 - pointOnCollider1;
+            Debug.Log("Direction from Object1 to Object2: " + direction.normalized);
+            dir = direction.normalized;
+        }
+        else
+        {
+            Debug.LogError("One or both objects are not assigned!");
         }
     }
 
@@ -77,6 +95,17 @@ public class Scanner : MonoBehaviour
         }
 
         return result;
+    }
+    float FindClosestDistance(Collider2D collider1, Collider2D collider2, out Vector2 pointOnCollider1, out Vector2 pointOnCollider2)
+    {
+        pointOnCollider1 = collider1.bounds.ClosestPoint(collider2.transform.position);
+        pointOnCollider2 = collider2.bounds.ClosestPoint(collider1.transform.position);
+
+        float distance = Vector2.Distance(pointOnCollider1, pointOnCollider2);
+
+        Debug.DrawLine(pointOnCollider1, pointOnCollider2, Color.red, 0.1f);
+
+        return distance;
     }
 
 }

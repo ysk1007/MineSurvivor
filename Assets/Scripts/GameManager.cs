@@ -22,6 +22,9 @@ public class GameManager : MonoBehaviour
     public float maxHp = 100;
     public int level;
     public int kill;
+    public int IronCount;
+    public int GoldCount;
+    public int DiamondCount;
     public int exp;
     public int[] nextExp = { 10, 30, 60, 100, 150, 210, 280, 360, 450, 600 };
     public Weapon weapon;

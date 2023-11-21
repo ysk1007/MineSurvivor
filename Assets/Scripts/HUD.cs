@@ -6,7 +6,7 @@ using static Cinemachine.DocumentationSortingAttribute;
 
 public class HUD : MonoBehaviour
 {
-    public enum InfoType { Exp, Level, Kill, Timer, Health }
+    public enum InfoType { Exp, Level, Kill, Timer, Health, IronCount, GoldCount, DiamondCount}
     public InfoType type;
 
     Text thisText;
@@ -43,6 +43,15 @@ public class HUD : MonoBehaviour
                 float curHp = GameManager.instance.curHp;
                 float maxHp = GameManager.instance.maxHp;
                 thisSlider.value = curHp / maxHp;
+                break;
+            case InfoType.IronCount:
+                thisText.text = string.Format("{0:F0}", GameManager.instance.IronCount);
+                break;
+            case InfoType.GoldCount:
+                thisText.text = string.Format("{0:F0}", GameManager.instance.GoldCount);
+                break;
+            case InfoType.DiamondCount:
+                thisText.text = string.Format("{0:F0}", GameManager.instance.DiamondCount);
                 break;
         }
     }
