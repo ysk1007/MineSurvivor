@@ -132,7 +132,7 @@ public class Weapon : MonoBehaviour
         player.Attack();
 
         // 물체의 위치
-        Vector2 objectPosition = player.scanner.FirstTarget.position;
+        Vector2 objectPosition = player.scanner.TargetPos;
 
         // 원의 중심 위치
         Vector2 circleCenter = center.position;

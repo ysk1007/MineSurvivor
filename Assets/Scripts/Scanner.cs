@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class Scanner : MonoBehaviour
 {
@@ -11,7 +12,9 @@ public class Scanner : MonoBehaviour
     public Transform nearestTarget;
     public Transform nearestBrick;
     public Transform FirstTarget;
+    public Vector2 TargetPos;
     public Vector2 dir;
+    public Tilemap tilemap;
 
     Player player;
 
@@ -28,31 +31,33 @@ public class Scanner : MonoBehaviour
         nearestTarget = GetNearest();
         nearestBrick = BricksGetNearest();
         FirstTarget = nearestTarget;
+
+        // 적과 브릭 둘 다 있을때
         if (nearestTarget != null && nearestBrick != null)
         {
+            //적을 우선 타겟
             FirstTarget = nearestTarget;
+            TargetPos = FirstTarget.position;
         }
+        // 근처에 브릭만 있을때
         else if(nearestTarget == null && nearestBrick != null)
         {
             FirstTarget = nearestBrick;
+            tilemap = FirstTarget.GetComponent<Tilemap>();
+            GetClosestTilePositionAndDirection(player.transform.position);
         }
-
-        if (player != null && FirstTarget != null)
+        // 적만 있을 때
+        else if(nearestTarget != null && nearestBrick == null)
         {
-            Vector2 pointOnCollider1;
-            Vector2 pointOnCollider2;
-
-            float distance = FindClosestDistance(player.GetComponent<Collider2D>(), FirstTarget.GetComponent<Collider2D>(), out pointOnCollider1, out pointOnCollider2);
-            Debug.Log("Distance between Object1 and Object2: " + distance);
-
-            Vector2 direction = pointOnCollider2 - pointOnCollider1;
-            Debug.Log("Direction from Object1 to Object2: " + direction.normalized);
-            dir = direction.normalized;
+            FirstTarget = nearestTarget;
+            TargetPos = FirstTarget.position;
         }
         else
         {
-            Debug.LogError("One or both objects are not assigned!");
+            Debug.LogError("근처 아무것도 없음");
         }
+        // 타겟 디버그
+        Debug.DrawLine(transform.position, TargetPos, Color.blue, 0.3f);
     }
 
     Transform GetNearest()
@@ -96,16 +101,47 @@ public class Scanner : MonoBehaviour
 
         return result;
     }
-    float FindClosestDistance(Collider2D collider1, Collider2D collider2, out Vector2 pointOnCollider1, out Vector2 pointOnCollider2)
+    void GetClosestTilePositionAndDirection(Vector3 currentPosition)
     {
-        pointOnCollider1 = collider1.bounds.ClosestPoint(collider2.transform.position);
-        pointOnCollider2 = collider2.bounds.ClosestPoint(collider1.transform.position);
+        Vector3Int playerCellPosition = tilemap.WorldToCell(currentPosition);
 
-        float distance = Vector2.Distance(pointOnCollider1, pointOnCollider2);
+        Vector3Int closestTilePosition = Vector3Int.zero; // 초기화
+        float closestDistance = float.MaxValue; // 초기화
+        int radiusInt = Mathf.RoundToInt(scanRnage);
+        // 주변 타일을 검사합니다.
+        for (int x = -radiusInt; x <= radiusInt; x++)
+        {
+            for (int y = -radiusInt; y <= radiusInt; y++)
+            {
+                Vector3Int cellPosition = new Vector3Int(playerCellPosition.x + x, playerCellPosition.y + y, playerCellPosition.z);
 
-        Debug.DrawLine(pointOnCollider1, pointOnCollider2, Color.red, 0.1f);
+                // 타일이 존재하는지 확인하고, 존재하면 해당 타일의 월드 좌표를 구합니다.
+                TileBase tile = tilemap.GetTile(cellPosition);
+                if (tile != null)
+                {
+                    Vector3 tileWorldPosition = tilemap.GetCellCenterWorld(cellPosition);
 
-        return distance;
+                    // 현재 위치에서 가장 가까운 타일을 찾습니다.
+                    float distance = Vector3.Distance(currentPosition, tileWorldPosition);
+                    if (distance < closestDistance)
+                    {
+                        closestDistance = distance;
+                        closestTilePosition = cellPosition;
+                    }
+                }
+            }
+        }
+
+        // 가장 가까운 타일의 방향을 구합니다.
+        Vector3 closestTileWorldPosition = tilemap.GetCellCenterWorld(closestTilePosition);
+        Vector3 direction = closestTileWorldPosition - currentPosition;
+        direction.Normalize(); // 방향을 정규화합니다.
+
+        // 결과 출력
+        Debug.Log("가장 가까운 타일의 위치: " + closestTileWorldPosition);
+        Debug.Log("가장 가까운 타일의 방향: " + direction);
+        dir = direction;
+        TargetPos = closestTileWorldPosition;
     }
 
 }

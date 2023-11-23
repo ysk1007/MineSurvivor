@@ -13,6 +13,7 @@ public class Enemy : MonoBehaviour
     public float Dir;
     bool isLive;
     bool Targeting;
+    Vector2 curDir;
 
     Rigidbody2D rigid;
     Collider2D coll;
@@ -63,6 +64,7 @@ public class Enemy : MonoBehaviour
 
         Vector2 dirVec = target.position - rigid.position; //타겟을 향하는 방향
         Dir = dirVec.x;
+        curDir = dirVec.normalized;
         Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime; //타겟을 향한 움직임
 
         rigid.MovePosition(rigid.position + nextVec);
@@ -113,7 +115,7 @@ public class Enemy : MonoBehaviour
             case "Slash":
                 Debug.Log("칼 맞음");
                 currentHp -= collision.GetComponent<Slash>().damage;
-                StartCoroutine(KnockBack(collision.GetComponent<Slash>().dir));
+                StartCoroutine(KnockBack());
                 break;
             case "Expolsion":
                 Debug.Log("폭탄 맞음");
@@ -145,12 +147,11 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    IEnumerator KnockBack(Vector3 dir)
+    IEnumerator KnockBack()
     {
         yield return wait; // 다음 하나의 물리 프레임 딜레이
         Vector3 playerPos = GameManager.instance.player.transform.position;
-        Vector3 dirVec = transform.position - playerPos;
-        rigid.AddForce(dir * 1.5f, ForceMode2D.Impulse);
+        rigid.AddForce(-curDir * 1f, ForceMode2D.Impulse);
         yield return new WaitForSeconds(0.5f);
         anim.SetBool("Hit", false);
     }
