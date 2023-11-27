@@ -137,9 +137,6 @@ public class Scanner : MonoBehaviour
         Vector3 direction = closestTileWorldPosition - currentPosition;
         direction.Normalize(); // 방향을 정규화합니다.
 
-        // 결과 출력
-        Debug.Log("가장 가까운 타일의 위치: " + closestTileWorldPosition);
-        Debug.Log("가장 가까운 타일의 방향: " + direction);
         dir = direction;
         TargetPos = closestTileWorldPosition;
     }

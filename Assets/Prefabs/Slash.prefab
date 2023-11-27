@@ -55,7 +55,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: f8723242674908241b40553ce9c023d4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -106,6 +106,7 @@ MonoBehaviour:
   damage: 55
   per: 0
   dir: {x: 0, y: 0, z: 0}
+  light2D: {fileID: 0}
 --- !u!95 &4710273553494356056
 Animator:
   serializedVersion: 5

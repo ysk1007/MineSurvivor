@@ -123,9 +123,6 @@ public class Weapon : MonoBehaviour
     {
         if (!player.scanner.FirstTarget)
             return;
-        /*Vector3 targetPos = player.scanner.FirstTarget.position;
-        Vector3 dir = targetPos - transform.position;
-        dir = dir.normalized; //방향은 유지 크기는 1로 고정*/
 
         Vector2 dir = player.scanner.dir;
 
@@ -158,20 +155,22 @@ public class Weapon : MonoBehaviour
         if (!player.scanner.FirstTarget)
             return;
 
-        /*Vector3 targetPos = player.scanner.FirstTarget.position;
-        Vector3 dir = targetPos - transform.position;
-        dir = dir.normalized; //방향은 유지 크기는 1로 고정*/
+        // 물체의 위치
+        Vector2 objectPosition = player.scanner.TargetPos;
 
-        Vector3 dir = player.scanner.dir;
+        // 원의 중심 위치
+        Vector2 circleCenter = center.position;
+
+        // 원 중심에서 물체까지의 벡터
+        Vector2 toObject = objectPosition - circleCenter;
 
         player.Attack();
 
         Transform Dynamite = GameManager.instance.pool.Get(prefabId, true).transform;
         // 물체를 가장 가까운 점으로 이동
         Dynamite.position = transform.position;
-        //Dynamite.transform.parent = GameManager.instance.pool.transform;
-        Dynamite.rotation = Quaternion.FromToRotation(Vector3.up, dir.normalized);
-        Dynamite.GetComponent<Dynamite>().Init(damage, count, dir);
+        Dynamite.GetComponent<Dynamite>().Init(damage, count, toObject.normalized);
+        Dynamite.rotation = Quaternion.FromToRotation(Vector3.up, toObject.normalized);
 
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);
     }

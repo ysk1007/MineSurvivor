@@ -9,9 +9,10 @@ public class Item : MonoBehaviour
     public int level;
     public Weapon weapon;
     public Gear gear;
+    public Sprite point;
+    public Image[] Levels;
 
     Image icon;
-    Text textLevel;
     Text textName;
     Text textDesc;
 
@@ -21,16 +22,17 @@ public class Item : MonoBehaviour
         icon.sprite = data.itemIcon;
 
         Text[] texts = GetComponentsInChildren<Text>();
-        textLevel = texts[0];
-        textName = texts[1];
-        textDesc = texts[2];
+        textName = texts[0];
+        textDesc = texts[1];
         textName.text = data.itemName;
     }
 
     void OnEnable()
     {
-        textLevel.text = "Lv." + (level + 1);
-
+        for (int i = 0; i < level + 1; i++)
+        {
+            Levels[i].sprite = point;
+        }
         switch (data.itemType)
         {
             case ItemData.ItemType.Pickax:
