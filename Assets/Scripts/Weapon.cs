@@ -8,8 +8,10 @@ public class Weapon : MonoBehaviour
     public int id;
     public int prefabId;
     public float damage;
+    public float DamagePer = 1; //데미지 배율
     public int count;
     public float speed;
+    public float speedPer = 1; //속도 배율
 
     public float timer;
     public Player player;
@@ -47,7 +49,7 @@ public class Weapon : MonoBehaviour
             case 0:
                 timer += Time.deltaTime;
 
-                if (timer > speed)
+                if (timer > speed * speedPer)
                 {
                     timer = 0f;
                     SlashAttack();
@@ -56,7 +58,7 @@ public class Weapon : MonoBehaviour
             case 1:
                 timer += Time.deltaTime;
 
-                if (timer > speed)
+                if (timer > speed * speedPer)
                 {
                     timer = 0f;
                     DynamiteAttack();
@@ -144,7 +146,7 @@ public class Weapon : MonoBehaviour
         // 물체를 가장 가까운 점으로 이동
         slash.transform.position = closestPointOnCircle;
         slash.transform.parent = this.transform;
-        slash.GetComponent<Slash>().Init(damage, count, dir);
+        slash.GetComponent<Slash>().Init(damage*DamagePer, count, dir);
         slash.rotation = Quaternion.FromToRotation(Vector3.up, toObject.normalized);
 
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Melee);

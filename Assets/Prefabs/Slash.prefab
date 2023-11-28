@@ -106,7 +106,9 @@ MonoBehaviour:
   damage: 55
   per: 0
   dir: {x: 0, y: 0, z: 0}
-  light2D: {fileID: 0}
+  material: {fileID: 0}
+  NormalColor: {r: 0.60461384, g: 4.7473364, b: 4.698204, a: 0}
+  BloodColor: {r: 12.125731, g: 0, b: 0, a: 0}
 --- !u!95 &4710273553494356056
 Animator:
   serializedVersion: 5

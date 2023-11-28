@@ -13,7 +13,11 @@ public class Player : MonoBehaviour
     public GameObject SlashAttack;
     public Transform AttackRange;
     public Scanner scanner;
-
+    public int id;
+    public float SkillTimer;
+    public bool isSkill;
+    public GameObject efc;
+    public float[] SkillDuration;
     Rigidbody2D rigid;
     Transform transform;
     Animator anim;
@@ -34,6 +38,7 @@ public class Player : MonoBehaviour
     void OnEnable()
     {
         speed *= Character.Speed;
+        id = GameManager.instance.playerID;
     }
     
     
@@ -53,6 +58,33 @@ public class Player : MonoBehaviour
 
         inputVec.x = Input.GetAxisRaw("Horizontal");
         inputVec.y = Input.GetAxisRaw("Vertical");
+
+        if (isSkill)
+            return;
+
+        switch (id) //캐릭터 별 스킬
+        {
+            case 0: //곡괭이
+                SkillTimer += Time.deltaTime;
+                if (SkillTimer > 5)
+                {
+                    SkillTimer = 0f;
+                    isSkill = true;
+                    efc.SetActive(true);
+                    StartCoroutine(Skill(id));
+                }
+                break;
+            case 1: //다이너마이트
+                SkillTimer += Time.deltaTime;
+
+                if (SkillTimer > 5)
+                {
+                    SkillTimer = 0f;
+                    isSkill = true;
+                    //Skill(id);
+                }
+                break;
+        }
     }
 
     void LateUpdate()
@@ -110,5 +142,34 @@ public class Player : MonoBehaviour
             anim.SetTrigger("Die");
             GameManager.instance.GameOver();
         }
+    }
+
+    IEnumerator Skill(int id)
+    {
+        Debug.Log("스킬시전");
+        Weapon weapon = GameManager.instance.weapon;
+        float timeElapsed = 0f;
+
+        switch (id)
+        {
+            case 0:
+                weapon.DamagePer = 1.5f;
+                weapon.speedPer = 0.8f;
+                while (timeElapsed < SkillDuration[id])
+                {
+                    // Mathf.Lerp를 사용하여 1에서 0으로 자연스럽게 감소하는 값을 계산
+                    float smoothDecreaseValue = Mathf.Lerp(1f, 0f, timeElapsed / SkillDuration[id]);
+
+                    // 시간 업데이트
+                    timeElapsed += Time.deltaTime;
+
+                    yield return null;
+                }
+                weapon.DamagePer = 1f;
+                weapon.speedPer = 1f;
+                efc.SetActive(false);
+                break;
+        }
+        isSkill = false;
     }
 }

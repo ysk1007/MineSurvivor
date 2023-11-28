@@ -55,22 +55,13 @@ public class Item : MonoBehaviour
         {
             case ItemData.ItemType.Pickax:
             case ItemData.ItemType.Range:
-                if (level == 0)
-                {
-                    GameObject newWeapon = new GameObject();
-                    weapon = newWeapon.AddComponent<Weapon>();
-                    weapon.Init(data);
-                }
-                else
-                {
                     float nextDamage = data.baseDamge;
                     int nextCount = 0;
 
                     nextDamage += data.baseDamge * data.damages[level];
                     nextCount += data.count[level];
 
-                    weapon.LevelUp(nextDamage, nextCount);
-                }
+                    GameManager.instance.weapon.GetComponent<Weapon>().LevelUp(nextDamage, nextCount);
                 break;
             case ItemData.ItemType.Glove:
             case ItemData.ItemType.Shoe:

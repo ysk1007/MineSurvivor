@@ -6,7 +6,7 @@ using static Cinemachine.DocumentationSortingAttribute;
 
 public class HUD : MonoBehaviour
 {
-    public enum InfoType { Exp, Level, Kill, Timer, Health, IronCount, GoldCount, DiamondCount}
+    public enum InfoType { Exp, Level, Kill, Timer, Health, IronCount, GoldCount, DiamondCount, HealthText, ExpText }
     public InfoType type;
 
     Text thisText;
@@ -27,6 +27,11 @@ public class HUD : MonoBehaviour
                 float maxExp = GameManager.instance.nextExp[Mathf.Min(GameManager.instance.level,GameManager.instance.nextExp.Length - 1)];
                 thisSlider.value = curExp / maxExp;
                 break;
+            case InfoType.ExpText:
+                float cExp = GameManager.instance.exp;
+                float mExp = GameManager.instance.nextExp[Mathf.Min(GameManager.instance.level, GameManager.instance.nextExp.Length - 1)];
+                thisText.text = string.Format("{0:F1}%", cExp / mExp * 100); // Format 0은 들어올 첫 번째 인자 값의 위치
+                break;
             case InfoType.Level:
                 thisText.text = string.Format("Lv.{0:F0}", GameManager.instance.level); // Format 0은 들어올 첫 번째 인자 값의 위치
                 break;
@@ -44,6 +49,11 @@ public class HUD : MonoBehaviour
                 float maxHp = GameManager.instance.maxHp;
                 thisSlider.value = curHp / maxHp;
                 break;
+            case InfoType.HealthText:
+                float Hp = GameManager.instance.curHp;
+                thisText.text = string.Format("{0:F0}%", Hp); // Format 0은 들어올 첫 번째 인자 값의 위치
+                thisText.color = color();
+                break;
             case InfoType.IronCount:
                 thisText.text = string.Format("{0:F0}", GameManager.instance.IronCount);
                 break;
@@ -54,5 +64,12 @@ public class HUD : MonoBehaviour
                 thisText.text = string.Format("{0:F0}", GameManager.instance.DiamondCount);
                 break;
         }
+    }
+
+    Color color()
+    {
+        float per = Mathf.Lerp(0f,1f, GameManager.instance.curHp/ GameManager.instance.maxHp)/2;
+        Color color = Color.HSVToRGB(per, 0.78f, 1f);
+        return color;
     }
 }

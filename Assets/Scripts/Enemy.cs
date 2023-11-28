@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using static Cinemachine.DocumentationSortingAttribute;
 
 public class Enemy : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class Enemy : MonoBehaviour
     bool isLive;
     bool Targeting;
     Vector2 curDir;
+    Vector3 vc;
 
     Rigidbody2D rigid;
     Collider2D coll;
@@ -109,17 +111,26 @@ public class Enemy : MonoBehaviour
     {
         if ((!collision.CompareTag("Slash") && !collision.CompareTag("Expolsion")) || !isLive)
             return;
-
+        Vector3 vc = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 1, -1);
+        float Damage;
+        GameObject DamageText;
         switch (collision.tag)
         {
             case "Slash":
-                Debug.Log("Ä® ¸ÂÀ½");
-                currentHp -= collision.GetComponent<Slash>().damage;
+                Damage = collision.GetComponent<Slash>().damage;
+                currentHp -= Damage;
+                DamageText = GameManager.instance.pool.Get(10, false);
+                DamageText.transform.position = vc;
+                DamageText.GetComponent<DamageText>().value(Damage);
                 StartCoroutine(KnockBack());
                 break;
             case "Expolsion":
-                Debug.Log("ÆøÅº ¸ÂÀ½");
-                currentHp -= collision.GetComponent<Expolsion>().damage;
+                Damage = collision.GetComponent<Expolsion>().damage;
+                currentHp -= Damage;
+                DamageText = GameManager.instance.pool.Get(10, false);
+                DamageText.transform.position = vc;
+                DamageText.GetComponent<DamageText>().value(Damage);
+                StartCoroutine(KnockBack());
                 break;
             default: 
                 currentHp -= 0; 

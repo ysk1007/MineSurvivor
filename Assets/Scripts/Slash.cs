@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Slash : MonoBehaviour
 {
@@ -10,12 +11,17 @@ public class Slash : MonoBehaviour
     public float damage;
     public int per;
     public Vector3 dir;
-    public UnityEngine.Rendering.Universal.Light2D light2D;
+    public Material material;
+    [ColorUsage(true, true)]
+    public Color NormalColor;
+    [ColorUsage(true, true)]
+    public Color BloodColor;
     Rigidbody2D rigid;
 
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
+        material = GetComponent<SpriteRenderer>().material;
     }
 
     public void Init(float damage, int per, Vector3 dir)
@@ -27,14 +33,24 @@ public class Slash : MonoBehaviour
     void OnEnable() //스크립트가 활성화 될 때 호출
     {
         DestroryArea();
-        StartCoroutine(SmoothDecreaseCoroutine());
         Invoke("SelfOff", 0.4f);
     }
 
     void SelfOff()
     {
-        Debug.Log("종료");
         gameObject.SetActive(false);
+    }
+
+    private void LateUpdate()
+    {
+        if (GameManager.instance.player.isSkill)
+        {
+            material.color = BloodColor;
+        }
+        else
+        {
+            material.color = NormalColor;
+        }
     }
 
     void DestroryArea()
@@ -56,24 +72,6 @@ public class Slash : MonoBehaviour
                     }
                 }
             }
-        }
-    }
-
-    IEnumerator SmoothDecreaseCoroutine()
-    {
-        float timeElapsed = 0f;
-
-        while (timeElapsed < 0.2f)
-        {
-            // Mathf.Lerp를 사용하여 1에서 0으로 자연스럽게 감소하는 값을 계산
-            float Value = Mathf.Lerp(1f, 0f, timeElapsed / 0.2f);
-
-            light2D.intensity = Value;
-
-            // 시간 업데이트
-            timeElapsed += Time.deltaTime;
-
-            yield return null;
         }
     }
 }
