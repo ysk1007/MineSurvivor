@@ -6,8 +6,9 @@ using static Cinemachine.DocumentationSortingAttribute;
 
 public class HUD : MonoBehaviour
 {
-    public enum InfoType { Exp, Level, Kill, Timer, Health, IronCount, GoldCount, DiamondCount, HealthText, ExpText }
+    public enum InfoType { Exp, Level, Kill, Timer, Health, IronCount, GoldCount, DiamondCount, HealthText, ExpText, ChargeBar }
     public InfoType type;
+    public Image image;
 
     Text thisText;
     Slider thisSlider;
@@ -63,6 +64,12 @@ public class HUD : MonoBehaviour
             case InfoType.DiamondCount:
                 thisText.text = string.Format("{0:F0}", GameManager.instance.DiamondCount);
                 break;
+            case InfoType.ChargeBar:
+                Player p = GameManager.instance.player;
+                float per = Mathf.Lerp(0f, 1f, p.SkillTimer / p.SkillCoolTime[p.id]);
+                thisSlider.value = per;
+                image.color = ChargeColor(per);
+                break;
         }
     }
 
@@ -70,6 +77,12 @@ public class HUD : MonoBehaviour
     {
         float per = Mathf.Lerp(0f,1f, GameManager.instance.curHp/ GameManager.instance.maxHp)/2;
         Color color = Color.HSVToRGB(per, 0.78f, 1f);
+        return color;
+    }
+
+    Color ChargeColor(float per)
+    {
+        Color color = Color.HSVToRGB(per / 3, 0.71f, 1f);
         return color;
     }
 }

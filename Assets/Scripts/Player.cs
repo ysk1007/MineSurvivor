@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     public Scanner scanner;
     public int id;
     public float SkillTimer;
+    public float[] SkillCoolTime;
     public bool isSkill;
     public GameObject efc;
     public float[] SkillDuration;
@@ -66,9 +67,8 @@ public class Player : MonoBehaviour
         {
             case 0: //°î±ªÀÌ
                 SkillTimer += Time.deltaTime;
-                if (SkillTimer > 5)
+                if (SkillTimer > SkillCoolTime[id])
                 {
-                    SkillTimer = 0f;
                     isSkill = true;
                     efc.SetActive(true);
                     StartCoroutine(Skill(id));
@@ -77,9 +77,8 @@ public class Player : MonoBehaviour
             case 1: //´ÙÀÌ³Ê¸¶ÀÌÆ®
                 SkillTimer += Time.deltaTime;
 
-                if (SkillTimer > 5)
+                if (SkillTimer > SkillCoolTime[id])
                 {
-                    SkillTimer = 0f;
                     isSkill = true;
                     //Skill(id);
                 }
@@ -171,5 +170,6 @@ public class Player : MonoBehaviour
                 break;
         }
         isSkill = false;
+        SkillTimer = 0f;
     }
 }
