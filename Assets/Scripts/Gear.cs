@@ -1,10 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Gear : MonoBehaviour
 {
     public ItemData.ItemType type;
+    public string itemName;
     public float rate;
 
     public void Init(ItemData data)
@@ -17,6 +21,7 @@ public class Gear : MonoBehaviour
         // Property Set
         type = data.itemType;
         rate = data.damages[0];
+        itemName = data.itemName;
         ApplyGear();
     }
 
@@ -35,6 +40,9 @@ public class Gear : MonoBehaviour
                 break;
             case ItemData.ItemType.Shoe:
                 SpeedUp();
+                break;
+            case ItemData.ItemType.Skill:
+                SkillUp(itemName);
                 break;
         }
     }
@@ -64,5 +72,37 @@ public class Gear : MonoBehaviour
     {
         float speed = 3 * Character.Speed;
         GameManager.instance.player.speed = speed + speed * rate;
+    }
+
+    void SkillUp(string itemName)
+    {
+        switch (itemName)
+        {
+            case "광란":
+                GameManager.instance.player.SkillCoolTime[0] -= rate;
+                break;
+            case "아드레날린":
+                GameManager.instance.player.BSK_Level += (int)Math.Round(rate);
+                break;
+            case "파죽지세":
+                GameManager.instance.player.SkillDuration[0] += rate;
+                break;
+        }
+    }
+
+    public void CompletionSkill(string itemName)
+    {
+        switch (itemName)
+        {
+            case "광란":
+                GameManager.instance.player.SkillMaster1 = true;
+                break;
+            case "아드레날린":
+                GameManager.instance.player.SkillMaster2 = true;
+                break;
+            case "파죽지세":
+                GameManager.instance.player.SkillMaster3 = true;
+                break;
+        }
     }
 }

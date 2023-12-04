@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,6 +35,7 @@ public class Item : MonoBehaviour
         {
             Levels[i].sprite = point;
         }
+        textName.text = data.itemName + " " + string.Concat(Enumerable.Repeat("I", level+1));
         switch (data.itemType)
         {
             case ItemData.ItemType.Pickax:
@@ -42,6 +45,32 @@ public class Item : MonoBehaviour
             case ItemData.ItemType.Glove:
             case ItemData.ItemType.Shoe:
                 textDesc.text = string.Format(data.itemDesc, data.damages[level] * 100);
+                break;
+            case ItemData.ItemType.Skill:
+                if (level == 2)
+                {
+                    if (data.itemName == "아드레날린")
+                    {
+                        Player p = GameManager.instance.player;
+                        textDesc.text = string.Format(data.itemDesc, p.BSK_Damage[p.BSK_Level+1] * 100, p.BSK_Speed[p.BSK_Level+1] * 100);
+                        textDesc.text += data.SpecialDesc;
+                    }
+                    else
+                    {
+                        textDesc.text = string.Format(data.itemDesc, data.damages[level]);
+                        textDesc.text += data.SpecialDesc;
+                    }
+                }
+                else
+                {
+                    if (data.itemName == "아드레날린")
+                    {
+                        Player p = GameManager.instance.player;
+                        textDesc.text = string.Format(data.itemDesc, p.BSK_Damage[p.BSK_Level + 1] * 100, 100 - p.BSK_Speed[p.BSK_Level + 1] * 100);
+                    }
+                    else
+                        textDesc.text = string.Format(data.itemDesc, data.damages[level]);
+                }
                 break;
             default:
                 textDesc.text = string.Format(data.itemDesc);
@@ -75,6 +104,23 @@ public class Item : MonoBehaviour
                 {
                     float nextRate = data.damages[level];
                     gear.LevelUp(nextRate);
+                }
+                break;
+            case ItemData.ItemType.Skill:
+                if (level == 0)
+                {
+                    GameObject newGear = new GameObject();
+                    gear = newGear.AddComponent<Gear>();
+                    gear.Init(data);
+                }
+                else
+                {
+                    float nextRate = data.damages[level];
+                    gear.LevelUp(nextRate);
+                    if (level == 2)
+                    {
+                        gear.CompletionSkill(data.itemName);
+                    }
                 }
                 break;
             case ItemData.ItemType.Heal:

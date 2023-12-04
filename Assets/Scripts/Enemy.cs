@@ -152,7 +152,10 @@ public class Enemy : MonoBehaviour
             anim.SetTrigger("Die");
             GameManager.instance.kill++;
             GameManager.instance.GetExp();
-
+            if (GameManager.instance.player.id == 0)
+            {
+                GameManager.instance.player.Berserker();
+            }
             if (GameManager.instance.isLive)
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Dead);
         }

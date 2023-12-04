@@ -15,10 +15,14 @@ public class Player : MonoBehaviour
     public Scanner scanner;
     public int id;
     public float SkillTimer;
+    public float SkillDurTimer;
     public float[] SkillCoolTime;
     public bool isSkill;
     public GameObject efc;
     public float[] SkillDuration;
+    public bool SkillMaster1, SkillMaster2, SkillMaster3;
+    public int BSK_Level;
+    public float[] BSK_Damage, BSK_Speed;
     Rigidbody2D rigid;
     Transform transform;
     Animator anim;
@@ -147,20 +151,20 @@ public class Player : MonoBehaviour
     {
         Debug.Log("스킬시전");
         Weapon weapon = GameManager.instance.weapon;
-        float timeElapsed = 0f;
+        SkillDurTimer = 0f;
 
         switch (id)
         {
             case 0:
-                weapon.DamagePer = 1.5f;
-                weapon.speedPer = 0.8f;
-                while (timeElapsed < SkillDuration[id])
+                weapon.DamagePer = BSK_Damage[BSK_Level];
+                weapon.speedPer = BSK_Speed[BSK_Level];
+                while (SkillDurTimer < SkillDuration[id])
                 {
                     // Mathf.Lerp를 사용하여 1에서 0으로 자연스럽게 감소하는 값을 계산
-                    float smoothDecreaseValue = Mathf.Lerp(1f, 0f, timeElapsed / SkillDuration[id]);
+                    float smoothDecreaseValue = Mathf.Lerp(1f, 0f, SkillDurTimer / SkillDuration[id]);
 
                     // 시간 업데이트
-                    timeElapsed += Time.deltaTime;
+                    SkillDurTimer += Time.deltaTime;
 
                     yield return null;
                 }
@@ -171,5 +175,26 @@ public class Player : MonoBehaviour
         }
         isSkill = false;
         SkillTimer = 0f;
+        SkillDurTimer = 0f;
+    }
+
+    public void Berserker()
+    {
+        if (SkillMaster1)
+        {
+            SkillTimer += 1f;
+        }
+        if (SkillMaster2 && isSkill)
+        {
+            GameManager.instance.curHp += 1f;
+            if (GameManager.instance.curHp > GameManager.instance.maxHp)
+            {
+                GameManager.instance.curHp = GameManager.instance.maxHp;
+            }
+        }
+        if (SkillMaster3)
+        {
+            SkillDurTimer -= 0.2f;
+        }
     }
 }

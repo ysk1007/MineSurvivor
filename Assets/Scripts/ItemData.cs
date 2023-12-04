@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Item", menuName = "Scriptable Object/ItemData")]
 public class ItemData : ScriptableObject
 {
-    public enum ItemType { Pickax, Dynamite, Range, Glove, Shoe, Heal }
+    public enum ItemType { Pickax, Dynamite, Range, Glove, Shoe, Heal, Skill }
 
     [Header(" # Main Info")]
     public ItemType itemType;
@@ -13,6 +13,8 @@ public class ItemData : ScriptableObject
     public string itemName;
     [TextArea]
     public string itemDesc;
+    [TextArea]
+    public string SpecialDesc;
     public Sprite itemIcon;
 
     [Header(" # Level Info")]
