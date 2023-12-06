@@ -149,7 +149,6 @@ public class Player : MonoBehaviour
 
     IEnumerator Skill(int id)
     {
-        Debug.Log("스킬시전");
         Weapon weapon = GameManager.instance.weapon;
         SkillDurTimer = 0f;
 

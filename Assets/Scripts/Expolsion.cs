@@ -29,7 +29,7 @@ public class Expolsion : MonoBehaviour
 
     void DestroryArea()
     {
-        int radiusInt = Mathf.RoundToInt(circleCollider2D.radius);
+        int radiusInt = Mathf.RoundToInt(circleCollider2D.radius) * 2;
         for (int i = -radiusInt; i <= radiusInt; i++)
         {
             for (int j = -radiusInt; j <= radiusInt; j++)

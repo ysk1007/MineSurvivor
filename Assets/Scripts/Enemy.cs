@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
 using static Cinemachine.DocumentationSortingAttribute;
 
 public class Enemy : MonoBehaviour
@@ -12,6 +14,8 @@ public class Enemy : MonoBehaviour
     public float maxHp;
     public Rigidbody2D target;
     public float Dir;
+    public Navigation navigation;
+    public NavMeshAgent agent;
     bool isLive;
     bool Targeting;
     Vector2 curDir;
@@ -33,6 +37,9 @@ public class Enemy : MonoBehaviour
         anim = GetComponent<Animator>();
         wait = new WaitForFixedUpdate();
         sort = GetComponent<SortingGroup>();
+        agent = GetComponent<NavMeshAgent>();
+        agent.updateUpAxis = false;
+        agent.updateRotation = false;
     }
 
     void FixedUpdate()
@@ -67,9 +74,8 @@ public class Enemy : MonoBehaviour
         Vector2 dirVec = target.position - rigid.position; //타겟을 향하는 방향
         Dir = dirVec.x;
         curDir = dirVec.normalized;
-        Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime; //타겟을 향한 움직임
 
-        rigid.MovePosition(rigid.position + nextVec);
+        agent.SetDestination(target.transform.position);
         rigid.velocity = Vector2.zero;
     }
 
