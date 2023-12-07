@@ -1,8 +1,10 @@
 using JetBrains.Annotations;
+using NavMeshPlus.Components;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using static UnityEditor.Experimental.GraphView.GraphView;
@@ -15,6 +17,7 @@ public class GameManager : MonoBehaviour
     public bool isLive;
     public float gameTime;
     public float maxGameTime = 2 * 10f;
+    public NavMeshSurface surface;
 
     [Header("# 플레이어 정보")]
     public int playerID;
@@ -120,7 +123,6 @@ public class GameManager : MonoBehaviour
         {
             return;
         }
-
         //게임 시간
         gameTime += Time.deltaTime;
 
@@ -130,6 +132,17 @@ public class GameManager : MonoBehaviour
             GameVictory();
         }
     }
+
+    void Bake()
+    {
+        if (!isLive)
+        {
+            CancelInvoke();
+        }
+        surface.UpdateNavMesh(surface.navMeshData);
+        Invoke("Bake",1f);
+    }
+
 
     public void GetExp()
     {
@@ -155,5 +168,6 @@ public class GameManager : MonoBehaviour
     {
         isLive = true;
         Time.timeScale = 1;
+        Bake();
     }
 }

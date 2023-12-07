@@ -100,6 +100,7 @@ public class Enemy : MonoBehaviour
         isLive = true;
         coll.enabled = true;
         rigid.simulated = true;
+        agent.enabled = true;
         sort.sortingOrder = 5;
         Targeting = true;
         currentHp = maxHp;
@@ -109,6 +110,7 @@ public class Enemy : MonoBehaviour
     {
         monsterType = data.monsterType;
         speed = data.speed;
+        agent.speed = data.speed;
         maxHp = data.hp;
         currentHp = data.hp;
     }
@@ -154,6 +156,7 @@ public class Enemy : MonoBehaviour
             isLive = false;
             coll.enabled = false;
             rigid.simulated = false;
+            agent.enabled = false;
             sort.sortingOrder = 4;
             anim.SetTrigger("Die");
             GameManager.instance.kill++;
@@ -170,6 +173,7 @@ public class Enemy : MonoBehaviour
     IEnumerator KnockBack()
     {
         yield return wait; // 다음 하나의 물리 프레임 딜레이
+        agent.SetDestination(transform.position);
         Vector3 playerPos = GameManager.instance.player.transform.position;
         rigid.AddForce(-curDir * 1f, ForceMode2D.Impulse);
         yield return new WaitForSeconds(0.5f);
