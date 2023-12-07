@@ -13,78 +13,58 @@ public class BrickSpawner : MonoBehaviour
     public int spawnRadius = 5; // 타일을 배치할 반경
     public int maxBrickCount = 10; // 최대 타일 개수
 
+    private List<int[,]> BrickPattern = new List<int[,]> { };
+
     // 2차원 배열
-    private int[,] Brick = {
-        {0, 0, 0, 0, 0 },
-        {0, 1, 1, 1, 0 },
-        {0, 1, 1, 1, 0 },
-        {0, 1, 1, 1, 0 },
-        {0, 0, 0, 0, 0 }
+    private int[,] Brick0 = {
+        {1, 0, 0,},
+        {1, 0, 0,},
+        {1, 1, 1,}
+    };
+
+    private int[,] Brick1 = {
+        {0, 1, 0,},
+        {0, 1, 0,},
+        {0, 1, 0,}
     };
 
     private int[,] Brick2 = {
         {1, 1, 1,},
-        {1, 1, 1,},
-        {1, 1, 1,}
+        {0, 0, 1,},
+        {0, 0, 1,}
     };
+
+    private int[,] Brick3 = {
+        {0, 1, 0,},
+        {1, 1, 1,},
+        {0, 1, 0,}
+    };
+
+    private int[,] Brick4 = {
+        {0, 0, 0,},
+        {1, 1, 1,},
+        {0, 0, 0,}
+    };
+
+    private int[,] Brick5 = {
+        {1, 1, 0,},
+        {1, 1, 0,},
+        {0, 0, 0,}
+    };
+
+    private void Awake()
+    {
+        BrickPattern.Add(Brick0);
+        BrickPattern.Add(Brick1);
+        BrickPattern.Add(Brick2);
+        BrickPattern.Add(Brick3);
+        BrickPattern.Add(Brick4);
+        BrickPattern.Add(Brick5);
+    }
 
     void Start()
     {
         SpawnTiles();
-    }
-
-    void ranDrawTiles()
-    {
-        // 0 또는 -1 중 하나를 랜덤으로 선택
-        int plusX = (UnityEngine.Random.Range(0, 2) == 0) ? 5 : -10;
-        // -10에서 10 중 하나를 랜덤으로 선택
-        int plusY = UnityEngine.Random.Range(-10, 11);
-        Debug.Log("plusX: " + plusX);
-        Debug.Log("plusY: " + plusY);
-
-        Vector2Int vc = new Vector2Int(Mathf.RoundToInt(GameManager.instance.player.transform.position.x), Mathf.RoundToInt(GameManager.instance.player.transform.position.y));
-        for (int i = 0; i < Brick.GetLength(0); i++)
-        {
-            for (int j = 0; j < Brick.GetLength(1); j++)
-            {
-                Vector3Int cellPosition = new Vector3Int(j+ vc.x+ plusX, -i+ vc.y+ plusY, 0); // Unity에서 y는 위가 양수이므로 부호를 반대로 함
-
-                // 각 요소의 값에 따라 타일을 그림
-                if (Brick[i, j] == 0)
-                {
-                    continue;
-                }
-                else if (Brick[i, j] == 1)
-                {
-                    tilemap.SetTile(cellPosition, tiles);
-                }
-            }
-        }
-
-        Invoke("ranDrawTiles", 3f);
-    }
-
-    void DrawTiles()
-    {
-        Vector2Int gridCenter = new Vector2Int(Mathf.RoundToInt(GameManager.instance.player.transform.position.x), Mathf.RoundToInt(GameManager.instance.player.transform.position.y));
-        Vector3Int tilemapCenter = tilemap.WorldToCell(new Vector3(gridCenter.x, gridCenter.y, 0));
-
-        for (int i = 0; i < Brick.GetLength(0); i++)
-        {
-            for (int j = 0; j < Brick.GetLength(1); j++)
-            {
-                // 각 요소의 값에 따라 타일을 그림
-                if (Brick[i, j] == 1)
-                {
-                    Vector3Int cellPosition = new Vector3Int(tilemapCenter.x + j, tilemapCenter.y - i, tilemapCenter.z);
-                    // 이미 타일이 있는지 확인
-                    if (tilemap.GetTile(cellPosition) == null)
-                    {
-                        tilemap.SetTile(cellPosition, tiles);
-                    }
-                }
-            }
-        }
     }
 
     void SpawnTiles()
@@ -99,18 +79,19 @@ public class BrickSpawner : MonoBehaviour
             // 이미 타일이 있는지 확인
             if (tilemap.GetTile(cellPosition) == null)
             {
-                for (int i = 0; i < Brick2.GetLength(0); i++)
+                int pattern = UnityEngine.Random.Range(0, 6);
+                for (int i = 0; i < BrickPattern[pattern].GetLength(0); i++)
                 {
-                    for (int j = 0; j < Brick2.GetLength(1); j++)
+                    for (int j = 0; j < BrickPattern[pattern].GetLength(1); j++)
                     {
                         Vector3Int pos = new Vector3Int(j+ cellPosition.x, -i+ cellPosition.y, 0); // Unity에서 y는 위가 양수이므로 부호를 반대로 함
 
                         // 각 요소의 값에 따라 타일을 그림
-                        if (Brick2[i, j] == 0)
+                        if (BrickPattern[pattern][i, j] == 0)
                         {
                             continue;
                         }
-                        else if (Brick2[i, j] == 1)
+                        else if (BrickPattern[pattern][i, j] == 1)
                         {
                             tilemap.SetTile(pos, tiles);
                         }
