@@ -4749,7 +4749,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 7.6190476
+  orthographic size: 8.333333
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -19833,8 +19833,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilemap: {fileID: 1179759555}
   tiles: {fileID: 11400000, guid: e7bdc80bbd1bca9408a90db547634a1f, type: 2}
-  spawnRadius: 20
-  maxBrickCount: 200
+  spawnRadius: 40
+  maxBrickCount: 400
 --- !u!1 &1183828422
 GameObject:
   m_ObjectHideFlags: 0
@@ -20224,6 +20224,7 @@ MonoBehaviour:
   isLive: 0
   gameTime: 0
   maxGameTime: 600
+  UpdateMesh: 0
   surface: {fileID: 1390558541}
   playerID: 0
   curHp: 0
@@ -21775,7 +21776,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.05
+  m_VoxelSize: 0.058333334
   m_BuildHeightMesh: 0
   m_HideEditorLogs: 0
   m_NavMeshData: {fileID: 23800000, guid: dc16e4228aedeaa4ea9dc73fd85dc1bf, type: 2}

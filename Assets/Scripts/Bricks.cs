@@ -31,6 +31,7 @@ public class Bricks : MonoBehaviour
             dropItem.transform.position = cellPosition;
         }
         stone.transform.position = cellPosition;
+        GameManager.instance.UpdateMesh = true;
     }
 
     int ran()
@@ -59,15 +60,4 @@ public class Bricks : MonoBehaviour
             return 9;
         }
     }
-
-    /*    void OnTriggerEnter2D(Collider2D collision) //피격 감지
-        {
-            if ((!collision.CompareTag("Slash") && !collision.CompareTag("Expolsion")))
-                return;
-            Collider2D overCollider2d = Physics2D.OverlapBox(collision.transform.position,collision.transform.localScale, 1);
-            if (overCollider2d != null)
-            {
-                this.GetComponent<Bricks>().MakeDot(collision.transform.position);
-            }
-        }*/
 }

@@ -99,5 +99,6 @@ public class BrickSpawner : MonoBehaviour
                 }
             }
         }
+        GameManager.instance.Bake();
     }
 }

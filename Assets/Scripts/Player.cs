@@ -128,6 +128,13 @@ public class Player : MonoBehaviour
         anim.SetTrigger("Attack");
     }
 
+    public void PickaxeAttack()
+    {
+        if (id != 0)
+            return;
+        GameManager.instance.weapon.SpawnSlash();
+    }
+
     void OnCollisionStay2D(Collision2D collision)
     {
         if (!collision.transform.CompareTag("Enemy") || !GameManager.instance.isLive)

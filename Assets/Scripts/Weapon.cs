@@ -125,10 +125,12 @@ public class Weapon : MonoBehaviour
     {
         if (!player.scanner.FirstTarget)
             return;
-
-        Vector2 dir = player.scanner.dir;
-
         player.Attack();
+    }
+
+    public void SpawnSlash()
+    {
+        Vector2 dir = player.scanner.dir;
 
         // 물체의 위치
         Vector2 objectPosition = player.scanner.TargetPos;
@@ -146,7 +148,7 @@ public class Weapon : MonoBehaviour
         // 물체를 가장 가까운 점으로 이동
         slash.transform.position = closestPointOnCircle;
         slash.transform.parent = this.transform;
-        slash.GetComponent<Slash>().Init(damage*DamagePer, count, dir);
+        slash.GetComponent<Slash>().Init(damage * DamagePer, count, dir);
         slash.rotation = Quaternion.FromToRotation(Vector3.up, toObject.normalized);
 
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Melee);

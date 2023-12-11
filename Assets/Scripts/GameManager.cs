@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     public bool isLive;
     public float gameTime;
     public float maxGameTime = 2 * 10f;
+    public bool UpdateMesh = false;
     public NavMeshSurface surface;
 
     [Header("# 플레이어 정보")]
@@ -133,14 +134,19 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void Bake()
+    private void LateUpdate()
     {
-        if (!isLive)
+        if (UpdateMesh)
         {
-            CancelInvoke();
+            Bake();
         }
+    }
+
+    public void Bake()
+    {
+        UpdateMesh = false;
+        Debug.Log("Mesh 갱신");
         surface.UpdateNavMesh(surface.navMeshData);
-        Invoke("Bake",1f);
     }
 
 
@@ -168,6 +174,5 @@ public class GameManager : MonoBehaviour
     {
         isLive = true;
         Time.timeScale = 1;
-        Bake();
     }
 }
