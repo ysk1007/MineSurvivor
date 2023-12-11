@@ -144,9 +144,9 @@ public class Weapon : MonoBehaviour
         // 해당 벡터를 원의 반지름만큼 정규화하여 가장 가까운 점을 계산하여 이동
         Vector2 closestPointOnCircle = circleCenter + toObject.normalized * radius;
 
-        Transform slash = GameManager.instance.pool.Get(prefabId, true).transform;
-        // 물체를 가장 가까운 점으로 이동
-        slash.transform.position = closestPointOnCircle;
+        Transform slash = GameManager.instance.pool.Get(prefabId, true, closestPointOnCircle).transform;
+        // 물체를 가장 가까운 점으로 이동 closestPointOnCircle
+
         slash.transform.parent = this.transform;
         slash.GetComponent<Slash>().Init(damage * DamagePer, count, dir);
         slash.rotation = Quaternion.FromToRotation(Vector3.up, toObject.normalized);
@@ -173,6 +173,7 @@ public class Weapon : MonoBehaviour
         Transform Dynamite = GameManager.instance.pool.Get(prefabId, true).transform;
         // 물체를 가장 가까운 점으로 이동
         Dynamite.position = transform.position;
+        Dynamite.transform.parent = GameManager.instance.pool.transform;
         Dynamite.GetComponent<Dynamite>().Init(damage, count, toObject.normalized);
         Dynamite.rotation = Quaternion.FromToRotation(Vector3.up, toObject.normalized);
 

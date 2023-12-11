@@ -53,4 +53,38 @@ public class PoolManager : MonoBehaviour
 
         return select;
     }
+
+    public GameObject Get(int index, bool mine, Vector3 pos)
+    {
+        GameObject select = null;
+
+        // 비활성화 된 오브젝트 접근
+        foreach (GameObject item in pools[index])
+        {
+            if (!item.activeSelf)
+            {
+                // 발견하면 select 변수에 할당
+                select = item;
+                select.transform.position = pos;
+                select.SetActive(true);
+                break;
+            }
+        }
+
+        // 없다면
+        if (select == null)
+        {
+            Transform trans = transform;
+            if (mine)
+            {
+                trans = player;
+            }
+            // 생성하고 할당
+            select = Instantiate(prefabs[index], trans);
+            select.transform.position = pos;
+            pools[index].Add(select);
+        }
+
+        return select;
+    }
 }

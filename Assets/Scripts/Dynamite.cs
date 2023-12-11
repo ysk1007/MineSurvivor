@@ -11,7 +11,6 @@ public class Dynamite : MonoBehaviour
     public int per;
     public Vector3 dir;
     Rigidbody2D rigid;
-    public GameObject Expolsion;
     public Transform pos;
     public float rotationSpeed = 360.0f; // 초당 회전 속도 (90도/초로 설정)
 
@@ -46,8 +45,9 @@ public class Dynamite : MonoBehaviour
 
         if (per == 0)
         {
+            GameManager.instance.pool.Get(5, false, transform.position);
             rigid.velocity = Vector2.zero;
-            Instantiate(Expolsion, pos.position, Quaternion.identity);
+            //Instantiate(Expolsion, pos.position, Quaternion.identity);
             gameObject.SetActive(false);
         }
     }
