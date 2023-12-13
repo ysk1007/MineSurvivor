@@ -117,7 +117,7 @@ public class Enemy : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision) //피격 감지
     {
-        if ((!collision.CompareTag("Slash") && !collision.CompareTag("Expolsion")) || !isLive)
+        if ((!collision.CompareTag("Slash") && !collision.CompareTag("Expolsion") && !collision.CompareTag("WindSlash")) || !isLive)
             return;
         Vector3 vc = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 1, -1);
         float Damage;
@@ -126,6 +126,14 @@ public class Enemy : MonoBehaviour
         {
             case "Slash":
                 Damage = collision.GetComponent<Slash>().damage;
+                currentHp -= Damage;
+                DamageText = GameManager.instance.pool.Get(10, false);
+                DamageText.transform.position = vc;
+                DamageText.GetComponent<DamageText>().value(Damage);
+                StartCoroutine(KnockBack());
+                break;
+            case "WindSlash":
+                Damage = collision.GetComponent<WindSlash>().damage;
                 currentHp -= Damage;
                 DamageText = GameManager.instance.pool.Get(10, false);
                 DamageText.transform.position = vc;

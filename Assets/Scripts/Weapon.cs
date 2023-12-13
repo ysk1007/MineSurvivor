@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.InputManagerEntry;
 
 public class Weapon : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class Weapon : MonoBehaviour
     public int count;
     public float speed;
     public float speedPer = 1; //속도 배율
+    public int AttackCount = 0;
 
     public float timer;
     public Player player;
@@ -152,6 +154,31 @@ public class Weapon : MonoBehaviour
         slash.rotation = Quaternion.FromToRotation(Vector3.up, toObject.normalized);
 
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Melee);
+        AttackCount++;
+
+        if (AttackCount == 3)
+        {
+            for (int i = -1; i <= 1; i++)
+            {
+                WindSlash(closestPointOnCircle, toObject, i * 15f);
+            }
+            AttackCount = 0;
+        }
+
+    }
+
+    void WindSlash(Vector2 pos,Vector2 dir, float angleOffset)
+    {
+        Quaternion rotation = Quaternion.Euler(0f, 0f, angleOffset);
+        Vector2 rotatedDir = rotation * dir.normalized;
+
+        Transform WindSlash = GameManager.instance.pool.Get(11, true).transform;
+        // 물체를 가장 가까운 점으로 이동
+        WindSlash.position = pos;
+        WindSlash.transform.parent = GameManager.instance.pool.transform;
+        WindSlash.GetComponent<WindSlash>().Init(damage, count, rotatedDir);
+        WindSlash.rotation = Quaternion.FromToRotation(Vector3.up, rotatedDir);
+        Debug.Log("바람 가르기");
     }
 
     void DynamiteAttack()

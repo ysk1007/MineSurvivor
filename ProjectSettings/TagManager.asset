@@ -11,6 +11,7 @@ TagManager:
   - Expolsion
   - NestedScrollManager
   - Bricks
+  - WindSlash
   layers:
   - Default
   - TransparentFX
