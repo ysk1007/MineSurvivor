@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     [Header("")]
+    public Weapon weapon;
     public Vector2 inputVec;
     public float speed;
     public GameObject SlashAttack;
@@ -125,6 +126,7 @@ public class Player : MonoBehaviour
 
     public void Attack()
     {
+        anim.SetFloat("AttackSpeed",(2f - weapon.speed) * (2f - weapon.speedPer));
         anim.SetTrigger("Attack");
     }
 
@@ -197,10 +199,6 @@ public class Player : MonoBehaviour
             {
                 GameManager.instance.curHp = GameManager.instance.maxHp;
             }
-        }
-        if (SkillMaster3)
-        {
-            SkillDurTimer -= 0.2f;
         }
     }
 }

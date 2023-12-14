@@ -16,12 +16,15 @@ MonoBehaviour:
   itemId: 5
   itemName: "\uACF5\uACA9\uC18D\uB3C4"
   itemDesc: "\uACF5\uACA9\uC18D\uB3C4 {0}% \uC99D\uAC00"
+  SpecialDesc: 
   itemIcon: {fileID: 21300000, guid: 7100928736f0ed241893ddc5b7166a28, type: 3}
   baseDamge: 0
   baseCount: 0
+  baseRange: 0
   damages:
+  - 0.05
   - 0.1
-  - 0.3
-  - 0.5
+  - 0.25
   count: 000000000000000000000000
+  Range: []
   projectile: {fileID: 0}

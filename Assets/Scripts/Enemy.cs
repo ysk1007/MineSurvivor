@@ -130,7 +130,7 @@ public class Enemy : MonoBehaviour
                 DamageText = GameManager.instance.pool.Get(10, false);
                 DamageText.transform.position = vc;
                 DamageText.GetComponent<DamageText>().value(Damage);
-                StartCoroutine(KnockBack());
+                //StartCoroutine(KnockBack());
                 break;
             case "WindSlash":
                 Damage = collision.GetComponent<WindSlash>().damage;
@@ -138,7 +138,6 @@ public class Enemy : MonoBehaviour
                 DamageText = GameManager.instance.pool.Get(10, false);
                 DamageText.transform.position = vc;
                 DamageText.GetComponent<DamageText>().value(Damage);
-                StartCoroutine(KnockBack());
                 break;
             case "Expolsion":
                 Damage = collision.GetComponent<Expolsion>().damage;
@@ -146,7 +145,7 @@ public class Enemy : MonoBehaviour
                 DamageText = GameManager.instance.pool.Get(10, false);
                 DamageText.transform.position = vc;
                 DamageText.GetComponent<DamageText>().value(Damage);
-                StartCoroutine(KnockBack());
+                //StartCoroutine(KnockBack());
                 break;
             default: 
                 currentHp -= 0; 
@@ -156,7 +155,7 @@ public class Enemy : MonoBehaviour
         if (currentHp > 0) //살아있음
         {
             anim.SetFloat("RunState", 0.7f);
-            anim.SetBool("Hit", true);
+            //anim.SetBool("Hit", true);
             AudioManager.instance.PlaySfx(AudioManager.Sfx.Hit);
         }
         else //죽음
@@ -184,7 +183,7 @@ public class Enemy : MonoBehaviour
         agent.SetDestination(transform.position);
         Vector3 playerPos = GameManager.instance.player.transform.position;
         rigid.AddForce(-curDir * 1f, ForceMode2D.Impulse);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f);
         anim.SetBool("Hit", false);
     }
 

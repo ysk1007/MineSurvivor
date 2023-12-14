@@ -44,6 +44,9 @@ public class Gear : MonoBehaviour
             case ItemData.ItemType.Skill:
                 SkillUp(itemName);
                 break;
+            case ItemData.ItemType.Range:
+                RangeUp();
+                break;
         }
     }
 
@@ -60,7 +63,7 @@ public class Gear : MonoBehaviour
                     weapon.speed = speed + (speed * rate);
                     break;*/
                 default:
-                    float speed = 1 * Character.WeaponSpeed;
+                    float speed = 1f * Character.WeaponSpeed;
                     speed = 1f * Character.WeaponRate;
                     weapon.speed = speed * (1f - rate);
                     break;
@@ -84,8 +87,8 @@ public class Gear : MonoBehaviour
             case "아드레날린":
                 GameManager.instance.player.BSK_Level += (int)Math.Round(rate);
                 break;
-            case "파죽지세":
-                GameManager.instance.player.SkillDuration[0] += rate;
+            case "바람 가르기":
+                GameManager.instance.player.weapon.needCount = (int)Math.Round(rate);
                 break;
         }
     }
@@ -100,9 +103,14 @@ public class Gear : MonoBehaviour
             case "아드레날린":
                 GameManager.instance.player.SkillMaster2 = true;
                 break;
-            case "파죽지세":
+            case "바람 가르기":
                 GameManager.instance.player.SkillMaster3 = true;
                 break;
         }
+    }
+
+    public void RangeUp()
+    {
+        GameManager.instance.weapon.range = 1 + rate;
     }
 }

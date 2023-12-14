@@ -1301,7 +1301,7 @@ MonoBehaviour:
   spawnData:
   - spawnTime: 0.5
     monsterType: 0
-    hp: 10
+    hp: 30
     speed: 1
   - spawnTime: 0.5
     monsterType: 1
@@ -20235,7 +20235,7 @@ MonoBehaviour:
   GoldCount: 0
   DiamondCount: 0
   exp: 0
-  nextExp: 210000002100000021000000210000002100000021000000210000001e0000001e0000001e000000
+  nextExp: 03000000030000000600000006000000060000000800000008000000080000001e0000001e000000
   weapon: {fileID: 0}
   data:
   - {fileID: 11400000, guid: acb341061c564484ebb7d228fd44c49b, type: 2}
@@ -43511,6 +43511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 325d18223fb82144d94e5c4f8c22668a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weapon: {fileID: 0}
   inputVec: {x: 0, y: 0}
   speed: 3
   SlashAttack: {fileID: 6062720950677937167, guid: 38aeb253f4aed5e4ea7618eee64e08dc, type: 3}

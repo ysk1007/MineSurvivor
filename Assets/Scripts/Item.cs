@@ -39,11 +39,11 @@ public class Item : MonoBehaviour
         switch (data.itemType)
         {
             case ItemData.ItemType.Pickax:
-            case ItemData.ItemType.Range:
                 textDesc.text = string.Format(data.itemDesc, data.damages[level] * 100, data.count[level]);
                 break;
             case ItemData.ItemType.Glove:
             case ItemData.ItemType.Shoe:
+            case ItemData.ItemType.Range:
                 textDesc.text = string.Format(data.itemDesc, data.damages[level] * 100);
                 break;
             case ItemData.ItemType.Skill:
@@ -83,7 +83,6 @@ public class Item : MonoBehaviour
         switch (data.itemType)
         {
             case ItemData.ItemType.Pickax:
-            case ItemData.ItemType.Range:
                     float nextDamage = data.baseDamge;
                     int nextCount = 0;
 
@@ -121,6 +120,19 @@ public class Item : MonoBehaviour
                     {
                         gear.CompletionSkill(data.itemName);
                     }
+                }
+                break;
+            case ItemData.ItemType.Range:
+                if (level == 0)
+                {
+                    GameObject newGear = new GameObject();
+                    gear = newGear.AddComponent<Gear>();
+                    gear.Init(data);
+                }
+                else
+                {
+                    float nextRate = data.damages[level];
+                    gear.LevelUp(nextRate);
                 }
                 break;
             case ItemData.ItemType.Heal:

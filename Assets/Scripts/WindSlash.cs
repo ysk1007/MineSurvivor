@@ -32,7 +32,10 @@ public class WindSlash : MonoBehaviour
 
         if (per > -1)
         {
-            rigid.velocity = dir * 5f;
+            if (GameManager.instance.player.SkillMaster3)
+                rigid.velocity = dir * 10f;
+            else
+                rigid.velocity = dir * 5f;
         }
     }
 

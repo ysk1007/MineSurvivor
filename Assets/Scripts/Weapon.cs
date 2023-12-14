@@ -11,9 +11,12 @@ public class Weapon : MonoBehaviour
     public float damage;
     public float DamagePer = 1; //데미지 배율
     public int count;
-    public float speed;
+    public float speed; //공격 속도
     public float speedPer = 1; //속도 배율
     public int AttackCount = 0;
+    public int needCount = 999999;
+    public int ATN = 1; //공격 횟수
+    public float range = 1;
 
     public float timer;
     public Player player;
@@ -72,6 +75,7 @@ public class Weapon : MonoBehaviour
     public void Init(ItemData data)
     {
         player = GameManager.instance.player;
+        player.weapon = this;
         center = player.AttackRange.transform;
         // Basic Set
         name = "Weapon " + data.itemId;
@@ -152,11 +156,13 @@ public class Weapon : MonoBehaviour
         slash.transform.parent = this.transform;
         slash.GetComponent<Slash>().Init(damage * DamagePer, count, dir);
         slash.rotation = Quaternion.FromToRotation(Vector3.up, toObject.normalized);
+        Vector2 vc = new Vector2(range, range);
+        slash.localScale = vc;
 
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Melee);
         AttackCount++;
 
-        if (AttackCount == 3)
+        if (AttackCount >= needCount || (player.isSkill && player.SkillMaster3))
         {
             for (int i = -1; i <= 1; i++)
             {
@@ -164,7 +170,6 @@ public class Weapon : MonoBehaviour
             }
             AttackCount = 0;
         }
-
     }
 
     void WindSlash(Vector2 pos,Vector2 dir, float angleOffset)
@@ -178,7 +183,8 @@ public class Weapon : MonoBehaviour
         WindSlash.transform.parent = GameManager.instance.pool.transform;
         WindSlash.GetComponent<WindSlash>().Init(damage, count, rotatedDir);
         WindSlash.rotation = Quaternion.FromToRotation(Vector3.up, rotatedDir);
-        Debug.Log("바람 가르기");
+        Vector2 vc = new Vector2(range, range);
+        WindSlash.localScale = vc;
     }
 
     void DynamiteAttack()
