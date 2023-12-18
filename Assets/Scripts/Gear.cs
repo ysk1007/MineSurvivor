@@ -47,6 +47,9 @@ public class Gear : MonoBehaviour
             case ItemData.ItemType.Range:
                 RangeUp();
                 break;
+            case ItemData.ItemType.MaxHp:
+                MaxHpUp();
+                break;
         }
     }
 
@@ -75,6 +78,12 @@ public class Gear : MonoBehaviour
     {
         float speed = 3 * Character.Speed;
         GameManager.instance.player.speed = speed + speed * rate;
+    }
+
+    void MaxHpUp()
+    {
+        float hp = Character.MaxHp;
+        GameManager.instance.maxHp = hp + hp * rate;
     }
 
     void SkillUp(string itemName)

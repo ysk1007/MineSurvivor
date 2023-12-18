@@ -28,4 +28,9 @@ public class Character : MonoBehaviour
     {
         get { return GameManager.instance.playerID == 3 ? 1 : 0; }
     }
+
+    public static int MaxHp
+    {
+        get { return GameManager.instance.playerID == 0 ? 100 : 80; }
+    }
 }

@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3b5c0334b1de14d4c88ccef4f5705c52, type: 3}
-  m_Name: Item 6
+  m_Name: Item 9
   m_EditorClassIdentifier: 
-  itemType: 6
-  itemId: 6
-  itemName: "\uC544\uB4DC\uB808\uB0A0\uB9B0"
-  itemDesc: "\uAD11\uD3ED\uD654\uC77C \uB54C\n\uACF5\uACA9\uB825 +{0}%\n\uACF5\uACA9
-    \uC18D\uB3C4 +{1}%"
-  SpecialDesc: "\n\uC801 \uCC98\uCE58 \uC2DC \uC0B0\uC18C \uD68D\uB4DD"
-  itemIcon: {fileID: 21300000, guid: a494e2682dd47fa41a325b5bdd165f20, type: 3}
+  itemType: 8
+  itemId: 9
+  itemName: "\uC218\uD638\uCC9C\uC0AC"
+  itemDesc: "\uD50C\uB808\uC774\uC5B4\uB97C \uBCF4\uD638\uD558\uB294 \uBC29\uC5B4\uB9C9\n{0}\uCD08
+    \uB9C8\uB2E4 \uC0DD\uC131"
+  SpecialDesc: 
+  itemIcon: {fileID: 21300000, guid: f770e65c6cdb2bf4e9c70ea91b21fc06, type: 3}
   baseDamge: 0
   baseCount: 0
   damages:
-  - 1
-  - 1
-  - 1
+  - 30
+  - 20
+  - 10
   count: 000000000000000000000000
   projectile: {fileID: 0}

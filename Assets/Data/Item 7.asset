@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Item 7
   m_EditorClassIdentifier: 
   itemType: 6
-  itemId: 8
+  itemId: 7
   itemName: "\uBC14\uB78C \uAC00\uB974\uAE30"
   itemDesc: "{0}\uBC88\uC9F8 \uACF5\uACA9\uB9C8\uB2E4\n\uD22C\uC0AC\uCCB4 \uACF5\uACA9"
   SpecialDesc: "\n\uD22C\uC0AC\uCCB4 \uC18D\uB3C4 \uC99D\uAC00\n\uAD11\uD3ED\uD654\uC77C

@@ -72,6 +72,10 @@ public class Item : MonoBehaviour
                         textDesc.text = string.Format(data.itemDesc, data.damages[level]);
                 }
                 break;
+            case ItemData.ItemType.MaxHp:
+            case ItemData.ItemType.Shield:
+                textDesc.text = string.Format(data.itemDesc);
+                break;
             default:
                 textDesc.text = string.Format(data.itemDesc);
                 break;
@@ -93,6 +97,7 @@ public class Item : MonoBehaviour
                 break;
             case ItemData.ItemType.Glove:
             case ItemData.ItemType.Shoe:
+            case ItemData.ItemType.MaxHp:
                 if (level == 0)
                 {
                     GameObject newGear = new GameObject();
@@ -136,6 +141,7 @@ public class Item : MonoBehaviour
                 }
                 break;
             case ItemData.ItemType.Heal:
+            case ItemData.ItemType.Shield:
                 break;
         }
 
