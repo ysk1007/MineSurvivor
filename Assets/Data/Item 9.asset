@@ -14,16 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemType: 8
   itemId: 9
-  itemName: "\uC218\uD638\uCC9C\uC0AC"
-  itemDesc: "\uD50C\uB808\uC774\uC5B4\uB97C \uBCF4\uD638\uD558\uB294 \uBC29\uC5B4\uB9C9\n{0}\uCD08
-    \uB9C8\uB2E4 \uC0DD\uC131"
+  itemName: "\uACBD\uD5D8\uCE58"
+  itemDesc: "\uACBD\uD5D8\uCE58 \uD68D\uB4DD\uB7C9 +{0}%"
   SpecialDesc: 
-  itemIcon: {fileID: 21300000, guid: f770e65c6cdb2bf4e9c70ea91b21fc06, type: 3}
+  itemIcon: {fileID: 21300000, guid: 1313a8e38efbcb248b42e1c731ca2805, type: 3}
   baseDamge: 0
   baseCount: 0
   damages:
-  - 30
-  - 20
-  - 10
+  - 0.15
+  - 0.3
+  - 0.6
   count: 000000000000000000000000
   projectile: {fileID: 0}

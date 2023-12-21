@@ -167,7 +167,9 @@ public class Enemy : MonoBehaviour
             sort.sortingOrder = 4;
             anim.SetTrigger("Die");
             GameManager.instance.kill++;
-            GameManager.instance.GetExp();
+            //GameManager.instance.GetExp();
+            GameObject ExpGem = GameManager.instance.pool.Get(12, false);
+            ExpGem.transform.position = this.gameObject.transform.position;
             if (GameManager.instance.player.id == 0)
             {
                 GameManager.instance.player.Berserker();

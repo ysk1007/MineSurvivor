@@ -5,16 +5,18 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     public Transform[] spawnPoints;
-    public SpawnData[] spawnData;
+    public SpawnData[] SR_Enemy; //근거리 몬스터
+    public SpawnData[] LR_Enemy; //원거리 몬스터
     public float levelTime;
 
     public int level;
-    float timer;
+    float SR_timer;
+    float LR_timer;
 
     void Awake()
     {
         spawnPoints = GetComponentsInChildren<Transform>();
-        levelTime = GameManager.instance.maxGameTime / spawnData.Length;
+        levelTime = GameManager.instance.maxGameTime / SR_Enemy.Length;
     }
 
     void Update()
@@ -22,21 +24,43 @@ public class Spawner : MonoBehaviour
         if (!GameManager.instance.isLive)
             return;
 
-        timer += Time.deltaTime;
-        level = Mathf.Min(Mathf.FloorToInt(GameManager.instance.gameTime / levelTime), spawnData.Length - 1);
+        SR_timer += Time.deltaTime;
+        LR_timer += Time.deltaTime;
+        level = Mathf.Min(Mathf.FloorToInt(GameManager.instance.gameTime / levelTime), SR_Enemy.Length - 1);
 
-        if (timer > spawnData[level].spawnTime)
+        if (SR_timer > SR_Enemy[level].spawnTime)
         {
-            timer = 0f;
-            Spawn();
+            SR_timer = 0f;
+            Spawn(0);
+        }
+
+        if (LR_timer > LR_Enemy[level].spawnTime)
+        {
+            LR_timer = 0f;
+            Spawn(1);
         }
     }
 
-    void Spawn()
+    void Spawn(int type)
     {
         GameObject enemy = GameManager.instance.pool.Get(level, false);
         enemy.transform.position = spawnPoints[Random.Range(1, spawnPoints.Length)].position;
-        enemy.GetComponentInChildren<Enemy>().Init(spawnData[level]);
+        switch (type)
+        {
+            case 0:
+                enemy.GetComponentInChildren<Enemy>().Init(SR_Enemy[level]);
+                break;
+            case 1:
+                enemy.GetComponentInChildren<Enemy>().Init(LR_Enemy[level]);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void Event()
+    {
+        
     }
 }
 

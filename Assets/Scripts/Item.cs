@@ -44,6 +44,7 @@ public class Item : MonoBehaviour
             case ItemData.ItemType.Glove:
             case ItemData.ItemType.Shoe:
             case ItemData.ItemType.Range:
+            case ItemData.ItemType.Exp:
                 textDesc.text = string.Format(data.itemDesc, data.damages[level] * 100);
                 break;
             case ItemData.ItemType.Skill:
@@ -73,8 +74,7 @@ public class Item : MonoBehaviour
                 }
                 break;
             case ItemData.ItemType.MaxHp:
-            case ItemData.ItemType.Shield:
-                textDesc.text = string.Format(data.itemDesc);
+                textDesc.text = string.Format(data.itemDesc, data.damages[level]);
                 break;
             default:
                 textDesc.text = string.Format(data.itemDesc);
@@ -98,6 +98,7 @@ public class Item : MonoBehaviour
             case ItemData.ItemType.Glove:
             case ItemData.ItemType.Shoe:
             case ItemData.ItemType.MaxHp:
+            case ItemData.ItemType.Exp:
                 if (level == 0)
                 {
                     GameObject newGear = new GameObject();
@@ -141,7 +142,6 @@ public class Item : MonoBehaviour
                 }
                 break;
             case ItemData.ItemType.Heal:
-            case ItemData.ItemType.Shield:
                 break;
         }
 

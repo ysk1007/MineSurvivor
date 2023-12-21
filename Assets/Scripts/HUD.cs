@@ -31,7 +31,7 @@ public class HUD : MonoBehaviour
             case InfoType.ExpText:
                 float cExp = GameManager.instance.exp;
                 float mExp = GameManager.instance.nextExp[Mathf.Min(GameManager.instance.level, GameManager.instance.nextExp.Length - 1)];
-                thisText.text = string.Format("{0:F1}%", cExp / mExp * 100); // Format 0은 들어올 첫 번째 인자 값의 위치
+                thisText.text = string.Format("{0:F0}%", cExp / mExp * 100); // Format 0은 들어올 첫 번째 인자 값의 위치
                 break;
             case InfoType.Level:
                 thisText.text = string.Format("Lv.{0:F0}", GameManager.instance.level); // Format 0은 들어올 첫 번째 인자 값의 위치

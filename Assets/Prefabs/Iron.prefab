@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5052915069346606278}
   - component: {fileID: 2583627178607711972}
   - component: {fileID: 6895958049304192348}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Iron
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -173,6 +173,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
+  target: {fileID: 0}
+  speed: 4
+  magnet: 0
 --- !u!114 &6895958049304192348
 MonoBehaviour:
   m_ObjectHideFlags: 0

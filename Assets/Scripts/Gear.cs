@@ -50,6 +50,9 @@ public class Gear : MonoBehaviour
             case ItemData.ItemType.MaxHp:
                 MaxHpUp();
                 break;
+            case ItemData.ItemType.Exp:
+                GetXpUp();
+                break;
         }
     }
 
@@ -83,7 +86,12 @@ public class Gear : MonoBehaviour
     void MaxHpUp()
     {
         float hp = Character.MaxHp;
-        GameManager.instance.maxHp = hp + hp * rate;
+        GameManager.instance.maxHp = hp + rate;
+    }
+
+    void GetXpUp()
+    {
+        GameManager.instance.GetXp = rate;
     }
 
     void SkillUp(string itemName)

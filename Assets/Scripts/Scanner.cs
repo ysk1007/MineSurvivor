@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class Scanner : MonoBehaviour
 {
     public float scanRnage; // 감지하는 범위
+    public float getRange;
     public LayerMask[] targetLayer;
     public RaycastHit2D[] targets;
     public RaycastHit2D[] Bricks;
+    public RaycastHit2D[] items;
     public Transform nearestTarget;
     public Transform nearestBrick;
     public Transform FirstTarget;
@@ -28,6 +31,9 @@ public class Scanner : MonoBehaviour
         // 1. 캐스팅 시작 위치, 2. 반지름 길이, 3. 캐스팅 방향, 4. 캐스팅 길이, 5. 타겟 레이어
         targets = Physics2D.CircleCastAll(transform.position, scanRnage, Vector2.zero, 0, targetLayer[0]);
         Bricks = Physics2D.CircleCastAll(transform.position, scanRnage, Vector2.zero, 0, targetLayer[1]);
+        items = Physics2D.CircleCastAll(transform.position, getRange, Vector2.zero, 0, targetLayer[2]);
+        itemMagnet(items);
+
         nearestTarget = GetNearest();
         nearestBrick = BricksGetNearest();
         FirstTarget = nearestTarget;
@@ -139,6 +145,14 @@ public class Scanner : MonoBehaviour
 
         dir = direction;
         TargetPos = closestTileWorldPosition;
+    }
+
+    void itemMagnet(RaycastHit2D[] items)
+    {
+        foreach (RaycastHit2D item in items)
+        {
+            item.transform.GetComponent<DropItem>().magnet = true;
+        }
     }
 
 }

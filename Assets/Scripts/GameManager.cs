@@ -29,7 +29,8 @@ public class GameManager : MonoBehaviour
     public int IronCount;
     public int GoldCount;
     public int DiamondCount;
-    public int exp;
+    public float exp;
+    public float GetXp = 0;
     public int[] nextExp = { 10, 30, 60, 100, 150, 210, 280, 360, 450, 600 };
     public Weapon weapon;
     public ItemData[] data;
@@ -154,9 +155,9 @@ public class GameManager : MonoBehaviour
     {
         if (!isLive)
             return;
-        exp++;
+        exp += 1 + (1 * GetXp);
 
-        if (exp == nextExp[Mathf.Min(level, nextExp.Length -1)])
+        if (exp >= nextExp[Mathf.Min(level, nextExp.Length -1)])
         {
             level++;
             exp = 0;
