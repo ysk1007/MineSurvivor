@@ -8,10 +8,17 @@ using static Cinemachine.DocumentationSortingAttribute;
 
 public class Enemy : MonoBehaviour
 {
+    public LayerMask[] layerMask;
+    public RaycastHit2D raycastHit2D;
     public int monsterType;
     public float speed;
     public float currentHp;
     public float maxHp;
+    public float range;
+    public float ats;
+    public float Timer;
+    public bool aiming;
+    public Transform FirePoint;
     public Rigidbody2D target;
     public float Dir;
     public Navigation navigation;
@@ -49,34 +56,68 @@ public class Enemy : MonoBehaviour
 
         if (!isLive || anim.GetBool("Hit"))
             return;
-        if (Targeting)
+
+        float distanceToPlayer = Vector2.Distance(target.position, rigid.position);
+
+        if (distanceToPlayer <= range)
         {
-            float animspeed = 0;
-            switch (monsterType)
-            {
-                case 0:
-                    animspeed = 0.5f;
-                    break;
-                case 1:
-                    animspeed = 0.3f;
-                    break;
-                case 2:
-                    animspeed = 0.2f;
-                    break;
-            }
-            anim.SetFloat("RunState", animspeed);
+            agent.speed = 0f;
+            anim.SetFloat("RunState", 0f);
+            aiming = true;
         }
         else
         {
-            anim.SetFloat("RunState", 0f);
+            agent.speed = speed;
+            aiming = false;
+
+            if (Targeting)
+            {
+                float animspeed = 0;
+                switch (monsterType)
+                {
+                    case 0:
+                        animspeed = 0.5f;
+                        break;
+                    case 1:
+                        animspeed = 0.3f;
+                        break;
+                    case 2:
+                        animspeed = 0.2f;
+                        break;
+                }
+                anim.SetFloat("RunState", animspeed);
+            }
+            else
+            {
+                anim.SetFloat("RunState", 0f);
+            }
+
+            Vector2 dirVec = target.position - rigid.position; // 타겟을 향하는 방향
+            Dir = dirVec.x;
+            curDir = dirVec.normalized;
+
+            agent.SetDestination(target.transform.position);
+            rigid.velocity = Vector2.zero;
         }
+    }
 
-        Vector2 dirVec = target.position - rigid.position; //타겟을 향하는 방향
-        Dir = dirVec.x;
-        curDir = dirVec.normalized;
+    void Update()
+    {
+        if (!GameManager.instance.isLive)
+            return;
 
-        agent.SetDestination(target.transform.position);
-        rigid.velocity = Vector2.zero;
+        if (!isLive || anim.GetBool("Hit"))
+            return;
+
+        if (aiming)
+            Timer += Time.deltaTime;
+            if (Timer > ats)
+            {
+                Timer = 0f;
+                anim.SetFloat("AttackSpeed", 1f);
+                anim.SetFloat("NormalState", 0.6f);
+                anim.SetTrigger("Attack");
+            }
     }
 
     void LateUpdate()
@@ -113,6 +154,8 @@ public class Enemy : MonoBehaviour
         agent.speed = data.speed;
         maxHp = data.hp;
         currentHp = data.hp;
+        range = data.range;
+        ats = data.ats;
     }
 
     void OnTriggerEnter2D(Collider2D collision) //피격 감지
@@ -177,6 +220,18 @@ public class Enemy : MonoBehaviour
             if (GameManager.instance.isLive)
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Dead);
         }
+    }
+
+    public void ArrowFire()
+    {
+        Vector2 Target = GameManager.instance.player.transform.position - this.gameObject.transform.position;
+
+        Transform Arrow = GameManager.instance.pool.Get(13, true).transform;
+        // 물체를 가장 가까운 점으로 이동
+        Arrow.position = FirePoint.position;
+        Arrow.transform.parent = GameManager.instance.pool.transform;
+        Arrow.GetComponent<Arrow>().Init(5, 1, Target.normalized);
+        Arrow.rotation = Quaternion.FromToRotation(Vector3.up, Target.normalized);
     }
 
     IEnumerator KnockBack()

@@ -51,7 +51,7 @@ public class HUD : MonoBehaviour
                 thisSlider.value = curHp / maxHp;
                 break;
             case InfoType.HealthText:
-                float Hp = GameManager.instance.curHp;
+                float Hp = GameManager.instance.curHp / GameManager.instance.maxHp * 100;
                 thisText.text = string.Format("{0:F0}%", Hp); // Format 0은 들어올 첫 번째 인자 값의 위치
                 thisText.color = color();
                 break;

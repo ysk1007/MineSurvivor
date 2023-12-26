@@ -43,15 +43,17 @@ public class Spawner : MonoBehaviour
 
     void Spawn(int type)
     {
-        GameObject enemy = GameManager.instance.pool.Get(level, false);
-        enemy.transform.position = spawnPoints[Random.Range(1, spawnPoints.Length)].position;
         switch (type)
         {
             case 0:
-                enemy.GetComponentInChildren<Enemy>().Init(SR_Enemy[level]);
+                GameObject SR_enemy = GameManager.instance.pool.Get(SR_Enemy[level].monsterType, false);
+                SR_enemy.transform.position = spawnPoints[Random.Range(1, spawnPoints.Length)].position;
+                SR_enemy.GetComponentInChildren<Enemy>().Init(SR_Enemy[level]);
                 break;
             case 1:
-                enemy.GetComponentInChildren<Enemy>().Init(LR_Enemy[level]);
+                GameObject LR_enemy = GameManager.instance.pool.Get(LR_Enemy[level].monsterType, false);
+                LR_enemy.transform.position = spawnPoints[Random.Range(1, spawnPoints.Length)].position;
+                LR_enemy.GetComponentInChildren<Enemy>().Init(LR_Enemy[level]);
                 break;
             default:
                 break;
@@ -71,4 +73,6 @@ public class SpawnData
     public int monsterType;
     public int hp;
     public float speed;
+    public float range;
+    public float ats;
 }
