@@ -35,12 +35,25 @@ public class Arrow : MonoBehaviour
 
     void OnEnable() //스크립트가 활성화 될 때 호출
     {
-        Invoke("SelfOff", 3f);
+        trailRenderer.enabled = false;
+        Invoke("TrailOn", 0.3f);
     }
 
-    void SelfOff()
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("종료");
-        gameObject.SetActive(false);
+        if (!collision.CompareTag("Player") && !collision.CompareTag("Bricks") || per == -1)
+            return;
+        per--;
+
+        if (per == 0)
+        {
+            rigid.velocity = Vector2.zero;
+            gameObject.SetActive(false);
+        }
+    }
+
+    void TrailOn()
+    {
+        trailRenderer.enabled = true;
     }
 }

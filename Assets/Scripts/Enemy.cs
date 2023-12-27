@@ -226,12 +226,11 @@ public class Enemy : MonoBehaviour
     {
         Vector2 Target = GameManager.instance.player.transform.position - this.gameObject.transform.position;
 
-        Transform Arrow = GameManager.instance.pool.Get(13, true).transform;
-        // 물체를 가장 가까운 점으로 이동
-        Arrow.position = FirePoint.position;
+        GameObject Arrow = GameManager.instance.pool.Get(13, true);
+        Arrow.transform.position = FirePoint.position;
         Arrow.transform.parent = GameManager.instance.pool.transform;
         Arrow.GetComponent<Arrow>().Init(5, 1, Target.normalized);
-        Arrow.rotation = Quaternion.FromToRotation(Vector3.up, Target.normalized);
+        Arrow.transform.rotation = Quaternion.FromToRotation(Vector3.up, Target.normalized);
     }
 
     IEnumerator KnockBack()
