@@ -45,6 +45,11 @@ public class Arrow : MonoBehaviour
             return;
         per--;
 
+        if (collision.CompareTag("Player"))
+        {
+            GameManager.instance.curHp -= damage;
+        }
+
         if (per == 0)
         {
             rigid.velocity = Vector2.zero;
