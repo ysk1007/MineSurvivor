@@ -1,22 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static Cinemachine.DocumentationSortingAttribute;
 
 public class HUD : MonoBehaviour
 {
-    public enum InfoType { Exp, Level, Kill, Timer, Health, IronCount, GoldCount, DiamondCount, HealthText, ExpText, ChargeBar }
+    public enum InfoType { Exp, Level, Kill, Timer, Health, IronCount, GoldCount, DiamondCount, HealthText, ExpText, ChargeBar, UserGold, UserGem, UserName}
     public InfoType type;
     public Image image;
 
     Text thisText;
     Slider thisSlider;
+    TextMeshProUGUI TextMeshProUGUI;
 
     private void Awake()
     {
         thisText = GetComponent<Text>();
         thisSlider = GetComponent<Slider>();
+        TextMeshProUGUI = GetComponent<TextMeshProUGUI>();
     }
 
     private void LateUpdate()
@@ -70,6 +73,15 @@ public class HUD : MonoBehaviour
                 thisSlider.value = per;
                 image.color = ChargeColor(per);
                 break;
+            case InfoType.UserGold:
+                TextMeshProUGUI.text = GetThousandCommaText(UserInfoManager.Instance.userData.GameMoney);
+                break;
+            case InfoType.UserGem:
+                TextMeshProUGUI.text = GetThousandCommaText(UserInfoManager.Instance.userData.GameGem);
+                break;
+            case InfoType.UserName:
+                thisText.text = UserInfoManager.Instance.userData.UserName;
+                break;
         }
     }
 
@@ -84,5 +96,10 @@ public class HUD : MonoBehaviour
     {
         Color color = Color.HSVToRGB(per / 3, 0.71f, 1f);
         return color;
+    }
+
+    public string GetThousandCommaText(int data) 
+    { 
+        return string.Format("{0:#,0}", data); 
     }
 }

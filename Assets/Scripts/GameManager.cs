@@ -43,9 +43,19 @@ public class GameManager : MonoBehaviour
     public Result uiResult;
     public GameObject enemyCleaner;
 
-    void Awake()
+    private void Awake()
     {
-        instance = this;
+        if (instance != this && instance != null)
+        {
+            // 다른 Instance가 존재하면 현재 gameObject를 파괴한다.
+            Destroy(gameObject);
+            return;
+        }
+        else
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
     }
     // Start is called before the first frame update
     public void GameStart(int id)
