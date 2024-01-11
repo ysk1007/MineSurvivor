@@ -17,6 +17,7 @@ public class UserData //유저 데이터 클래스
 public class UserInfoManager : MonoBehaviour
 {
     public static UserInfoManager Instance;
+    public UnlockManager unlockManager;
     public bool DataExist = false;
 
     private string keyName = "UserData"; //키 값
@@ -40,6 +41,7 @@ public class UserInfoManager : MonoBehaviour
         }
     }
 
+
     public void DataSave() //데이터 생성
     {
         ES3.Save(keyName, userData);
@@ -51,12 +53,12 @@ public class UserInfoManager : MonoBehaviour
         {
             DataExist = true;
             ES3.LoadInto(keyName, userData); //로드
-            UnlockManager.Instance.DataLoad();
+            unlockManager.DataLoad();
         }
         else
         {
             DataSave(); //없으면 생성
-            UnlockManager.Instance.DataCreate();
+            unlockManager.DataCreate();
         }
     }
 }

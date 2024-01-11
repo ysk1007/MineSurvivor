@@ -23,13 +23,9 @@ public class GuiManager : MonoBehaviour
     public Image[] Skill_icons;
     public Sprite[] icon_prefabs_0, icon_prefabs_1;
 
-    private void Awake()
-    {
-        um = UnlockManager.Instance;
-    }
-
     public void Start()
     {
+        um = UnlockManager.Instance;
         CharacterChange(UserInfoManager.Instance.userData.SelectCharacter);
         UnlockCharacter();
     }
