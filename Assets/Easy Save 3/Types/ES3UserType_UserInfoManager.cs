@@ -30,7 +30,7 @@ namespace ES3Types
 				{
 					
 					case "Instance":
-						UserInfoManager.Instance = reader.Read<UserInfoManager>();
+						UserInfoManager.Instance = reader.Read<UserInfoManager>(ES3UserType_UserInfoManager.Instance);
 						break;
 					case "DataExist":
 						instance.DataExist = reader.Read<System.Boolean>(ES3Type_bool.Instance);

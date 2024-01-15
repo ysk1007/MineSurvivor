@@ -6,17 +6,17 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [System.Serializable]
-public class CharacterData //게임 캐릭터 데이터
+public class UserCharacterData //게임 캐릭터 데이터
 {
-    public string CharacterName; // 이름
-    public int CharacterID; // 고유 번호
     public bool CharacterAble; // 해금 여부
     public int CharacterLevel;
-    public int[] Damage; // 피해량
-    public int[] Hp; // 최대 체력
-    public string ATS; // 공격 속도
-    public string Speed; // 이동 속도
-    public string Range; // 사거리
+}
+
+[System.Serializable]
+public class UserArtifactData //게임 캐릭터 데이터
+{
+    public bool ArtifactAble; // 해금 여부
+    public int ArtifactLevel;
 }
 
 public class UnlockManager : MonoBehaviour
@@ -24,11 +24,14 @@ public class UnlockManager : MonoBehaviour
     public static UnlockManager Instance;
     public bool DataExist = false;
 
-    private string keyName = "UnlockData"; //키 값
+    private string keyNameCha = "UnlockChaData"; //키 값
+    private string keyNameArti = "UnlockArtiData"; //키 값
     private string fileName = "UserData.ms"; //파일 이름
 
-    public List<CharacterData> OriCha_info; // 오리지널 캐릭터 정보
-    public List<CharacterData> UserUnlockData;
+    public List<UserCharacterData> OriCha_info; // 오리지널 캐릭터 정보
+    public List<UserCharacterData> UserCharacterData;
+    public List<UserArtifactData> OriArti_info; // 오리지널 아티팩트 정보
+    public List<UserArtifactData> UserArtifactData;
 
     private void Awake()
     {
@@ -49,7 +52,11 @@ public class UnlockManager : MonoBehaviour
     {
         for (int i = 0; i < OriCha_info.Count - 1; i++)
         {
-            ES3.Save<List<CharacterData>>(keyName, UserUnlockData);
+            ES3.Save<List<UserCharacterData>>(keyNameCha, UserCharacterData);
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            ES3.Save<List<UserArtifactData>>(keyNameArti, UserArtifactData);
         }
     }
 
@@ -57,9 +64,13 @@ public class UnlockManager : MonoBehaviour
     {
         for (int i = 0; i < OriCha_info.Count - 1; i++)
         {
-            ES3.Save<List<CharacterData>>(keyName, OriCha_info);
+            ES3.Save<List<UserCharacterData>>(keyNameCha, OriCha_info);
         }
-        UserUnlockData = OriCha_info;
+        for (int i = 0; i < 3; i++)
+        {
+            ES3.Save<List<UserArtifactData>>(keyNameArti, OriArti_info);
+        }
+        UserCharacterData = OriCha_info;
     }
 
     public void DataLoad()
@@ -67,7 +78,8 @@ public class UnlockManager : MonoBehaviour
         if (ES3.FileExists(fileName)) //파일 경로에 데이터 있을 경우
         {
             DataExist = true;
-            UserUnlockData = ES3.Load<List<CharacterData>>(keyName);
+            UserCharacterData = ES3.Load<List<UserCharacterData>>(keyNameCha);
+            UserArtifactData = ES3.Load<List<UserArtifactData>>(keyNameArti);
         }
         else
         {

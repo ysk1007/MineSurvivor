@@ -4,7 +4,7 @@ using UnityEngine;
 namespace ES3Types
 {
 	[UnityEngine.Scripting.Preserve]
-	[ES3PropertiesAttribute("Instance", "DataExist", "OriCha_info", "UserUnlockData")]
+	[ES3PropertiesAttribute("Instance", "DataExist", "OriCha_info", "UserCharacterData", "OriArti_info", "UserArtifactData")]
 	public class ES3UserType_UnlockManager : ES3ComponentType
 	{
 		public static ES3Type Instance = null;
@@ -18,8 +18,10 @@ namespace ES3Types
 			
 			writer.WritePropertyByRef("Instance", UnlockManager.Instance);
 			writer.WriteProperty("DataExist", instance.DataExist, ES3Type_bool.Instance);
-			writer.WriteProperty("OriCha_info", instance.OriCha_info, ES3Internal.ES3TypeMgr.GetOrCreateES3Type(typeof(System.Collections.Generic.List<CharacterData>)));
-			writer.WriteProperty("UserUnlockData", instance.UserUnlockData, ES3Internal.ES3TypeMgr.GetOrCreateES3Type(typeof(System.Collections.Generic.List<CharacterData>)));
+			writer.WriteProperty("OriCha_info", instance.OriCha_info, ES3Internal.ES3TypeMgr.GetOrCreateES3Type(typeof(System.Collections.Generic.List<UserCharacterData>)));
+			writer.WriteProperty("UserCharacterData", instance.UserCharacterData, ES3Internal.ES3TypeMgr.GetOrCreateES3Type(typeof(System.Collections.Generic.List<UserCharacterData>)));
+			writer.WriteProperty("OriArti_info", instance.OriArti_info, ES3Internal.ES3TypeMgr.GetOrCreateES3Type(typeof(System.Collections.Generic.List<UserArtifactData>)));
+			writer.WriteProperty("UserArtifactData", instance.UserArtifactData, ES3Internal.ES3TypeMgr.GetOrCreateES3Type(typeof(System.Collections.Generic.List<UserArtifactData>)));
 		}
 
 		protected override void ReadComponent<T>(ES3Reader reader, object obj)
@@ -37,10 +39,16 @@ namespace ES3Types
 						instance.DataExist = reader.Read<System.Boolean>(ES3Type_bool.Instance);
 						break;
 					case "OriCha_info":
-						instance.OriCha_info = reader.Read<System.Collections.Generic.List<CharacterData>>();
+						instance.OriCha_info = reader.Read<System.Collections.Generic.List<UserCharacterData>>();
 						break;
-					case "UserUnlockData":
-						instance.UserUnlockData = reader.Read<System.Collections.Generic.List<CharacterData>>();
+					case "UserCharacterData":
+						instance.UserCharacterData = reader.Read<System.Collections.Generic.List<UserCharacterData>>();
+						break;
+					case "OriArti_info":
+						instance.OriArti_info = reader.Read<System.Collections.Generic.List<UserArtifactData>>();
+						break;
+					case "UserArtifactData":
+						instance.UserArtifactData = reader.Read<System.Collections.Generic.List<UserArtifactData>>();
 						break;
 					default:
 						reader.Skip();

@@ -1068,43 +1068,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DataExist: 0
   OriCha_info:
-  - CharacterName: "\uBBFC\uC218"
-    CharacterID: 0
-    CharacterAble: 1
+  - CharacterAble: 1
     CharacterLevel: 0
-    Damage: 05000000060000000700000008000000
-    Hp: 320000003c0000004600000050000000
-    ATS: "\uBCF4\uD1B5"
-    Speed: "\uBCF4\uD1B5"
-    Range: "\uADFC\uC811"
-  - CharacterName: "\uD2F0\uD2F0"
-    CharacterID: 1
-    CharacterAble: 0
+  - CharacterAble: 0
     CharacterLevel: 0
-    Damage: 05000000060000000700000008000000
-    Hp: 320000003c0000004600000050000000
-    ATS: "\uB290\uB9BC"
-    Speed: "\uBCF4\uD1B5"
-    Range: "\uC6D0\uAC70\uB9AC"
-  - CharacterName: "\uB3D9\uC6B0"
-    CharacterID: 2
-    CharacterAble: 0
+  - CharacterAble: 0
     CharacterLevel: 0
-    Damage: 05000000060000000700000008000000
-    Hp: 320000003c0000004600000050000000
-    ATS: "\uBE60\uB984"
-    Speed: "\uBE60\uB984"
-    Range: "\uADFC\uC811"
-  - CharacterName: "\uBC18\uC7A5"
-    CharacterID: 3
-    CharacterAble: 0
+  - CharacterAble: 0
     CharacterLevel: 0
-    Damage: 05000000060000000700000008000000
-    Hp: 320000003c0000004600000050000000
-    ATS: "\uB290\uB9BC"
-    Speed: "\uB290\uB9BC"
-    Range: "\uADFC\uC811"
-  UserUnlockData: []
+  UserCharacterData: []
+  OriArti_info:
+  - ArtifactAble: 1
+    ArtifactLevel: 0
+  - ArtifactAble: 0
+    ArtifactLevel: 0
+  - ArtifactAble: 0
+    ArtifactLevel: 0
+  - ArtifactAble: 0
+    ArtifactLevel: 0
+  UserArtifactData: []
 --- !u!4 &1357676435
 Transform:
   m_ObjectHideFlags: 0
@@ -1228,7 +1210,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 856daf34869b98f488804eae55258b1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UnlockManager: {fileID: 1357676434}
+  unlockManager: {fileID: 1357676434}
   DataExist: 0
   userData:
     UserName: 

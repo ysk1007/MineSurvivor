@@ -6,8 +6,14 @@ using UnityEngine.UI;
 
 public class GuiManager : MonoBehaviour
 {
+    public static GuiManager instance;
+
+    public CharacterData[] characterDatas;
     public GameObject[] lockCharacter;
     public GameObject[] unlockCharacter;
+
+    public GameObject[] lockArtifact;
+    public GameObject[] ArtiSlots;
 
     public Text CharacterName;
     public Text Hp;
@@ -21,13 +27,18 @@ public class GuiManager : MonoBehaviour
     public GameObject[] Popup_CharacterPrefab;
 
     public Image[] Skill_icons;
-    public Sprite[] icon_prefabs_0, icon_prefabs_1;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     public void Start()
     {
         um = UnlockManager.Instance;
         CharacterChange(UserInfoManager.Instance.userData.SelectCharacter);
         UnlockCharacter();
+        UnlockArtifact();
     }
 
     private void LateUpdate()
@@ -37,20 +48,28 @@ public class GuiManager : MonoBehaviour
 
     void Setting(int CharacterID)
     {
-        CharacterName.text = "레벨 " + (um.UserUnlockData[CharacterID].CharacterLevel + 1) + " " + um.OriCha_info[CharacterID].CharacterName;
-        Hp.text = um.OriCha_info[CharacterID].Hp[um.UserUnlockData[CharacterID].CharacterLevel].ToString();
-        Damage.text = um.OriCha_info[CharacterID].Damage[um.UserUnlockData[CharacterID].CharacterLevel].ToString();
-        ATS.text = um.OriCha_info[CharacterID].ATS;
-        Speed.text = um.OriCha_info[CharacterID].Speed;
-        Range.text = um.OriCha_info[CharacterID].Range;
+        CharacterName.text = "레벨 " + (characterDatas[CharacterID].CharacterLevel + 1) + " " + characterDatas[CharacterID].CharacterName;
+        Hp.text = characterDatas[CharacterID].Hp[um.UserCharacterData[CharacterID].CharacterLevel].ToString();
+        Damage.text = characterDatas[CharacterID].Damage[um.UserCharacterData[CharacterID].CharacterLevel].ToString();
+        ATS.text = characterDatas[CharacterID].ATS;
+        Speed.text = characterDatas[CharacterID].Speed;
+        Range.text = characterDatas[CharacterID].Range;
     }
 
     public void UnlockCharacter()
     {
         for (int i = 0; i < lockCharacter.Length; i++)
         {
-            lockCharacter[i].SetActive(!um.UserUnlockData[i + 1].CharacterAble);
-            unlockCharacter[i].SetActive(um.UserUnlockData[i + 1].CharacterAble);
+            lockCharacter[i].SetActive(!um.UserCharacterData[i + 1].CharacterAble);
+            unlockCharacter[i].SetActive(um.UserCharacterData[i + 1].CharacterAble);
+        }
+    }
+
+    public void UnlockArtifact()
+    {
+        for (int i = 0; i < lockCharacter.Length; i++)
+        {
+            lockArtifact[i].SetActive(!um.UserArtifactData[i].ArtifactAble);
         }
     }
 
@@ -62,21 +81,15 @@ public class GuiManager : MonoBehaviour
             CharacterPrefab[i].SetActive((CharacterID == i) ? true : false);
             Popup_CharacterPrefab[i].SetActive((CharacterID == i) ? true : false);
         }
-
-        switch (CharacterID)
+        for (int i = 0; i < Skill_icons.Length; i++)
         {
-            case 0:
-                for (int i = 0; i < Skill_icons.Length; i++)
-                {
-                    Skill_icons[i].sprite = icon_prefabs_0[i];
-                }
-                break;
-            case 1:
-                for (int i = 0; i < Skill_icons.Length; i++)
-                {
-                    Skill_icons[i].sprite = icon_prefabs_1[i];
-                }
-                break;
+            Skill_icons[i].sprite = characterDatas[CharacterID].icons[i];
         }
+    }
+
+    public void ArtiEquip(int index,ArtifactData artifact)
+    {
+        ArtiSlots[index].GetComponent<Artifact>().data = artifact;
+        ArtiSlots[index].GetComponent<Artifact>().Init();
     }
 }
