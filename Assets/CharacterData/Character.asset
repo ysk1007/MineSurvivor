@@ -21,7 +21,10 @@ MonoBehaviour:
   ATS: "\uBCF4\uD1B5"
   Speed: "\uBCF4\uD1B5"
   Range: "\uADFC\uC811"
+  CharacterDesc: "\uC77C\uC815 \uC2DC\uAC04\uB3D9\uC548 \uCE90\uB9AD\uD130\uAC00\n\uAC15\uB825\uD574\uC9C0\uB294
+    \uAD11\uD3ED\uD654\uB97C \uC0AC\uC6A9\uD55C\uB2E4."
   icons:
   - {fileID: 21300000, guid: 8c0cfdd0142d86245a7f0ac13e065ae7, type: 3}
   - {fileID: 21300000, guid: a494e2682dd47fa41a325b5bdd165f20, type: 3}
   - {fileID: 21300000, guid: dc7125ee690cc7d4d9332d704058e3ce, type: 3}
+  illustration: {fileID: 21300000, guid: d702d3fea3737c4438de9b0b8bc2d443, type: 3}

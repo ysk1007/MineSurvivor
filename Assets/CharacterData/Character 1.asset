@@ -21,7 +21,9 @@ MonoBehaviour:
   ATS: "\uB290\uB9BC"
   Speed: "\uBCF4\uD1B5"
   Range: "\uC6D0\uAC70\uB9AC"
+  CharacterDesc: "\uBBF8\uC815"
   icons:
   - {fileID: 21300000, guid: 207e6ef76f135264b888e7ef02ffec73, type: 3}
   - {fileID: 21300000, guid: 1313a8e38efbcb248b42e1c731ca2805, type: 3}
   - {fileID: 21300000, guid: f1df368baf2df5f41b573d5edde7c2c8, type: 3}
+  illustration: {fileID: 21300000, guid: dce2851ed10210547810fff3c9d3f062, type: 3}

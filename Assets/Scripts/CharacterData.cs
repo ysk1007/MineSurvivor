@@ -19,8 +19,11 @@ public class CharacterData : ScriptableObject
     public string ATS; // 공격 속도
     public string Speed; // 이동 속도
     public string Range; // 사거리
+    [TextArea]
+    public string CharacterDesc;
 
     [Header(" # Skill icon")]
     public Sprite[] icons;
+    public Sprite illustration;
 
 }

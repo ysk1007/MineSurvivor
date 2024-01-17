@@ -21,10 +21,13 @@ public class GuiManager : MonoBehaviour
     public Text ATS;
     public Text Speed;
     public Text Range;
+    public Text Desc;
+    public Text UpDis1;
+    public Text UpDis2;
+    public Image illust;
     UnlockManager um;
 
     public GameObject[] CharacterPrefab;
-    public GameObject[] Popup_CharacterPrefab;
 
     public Image[] Skill_icons;
 
@@ -54,6 +57,10 @@ public class GuiManager : MonoBehaviour
         ATS.text = characterDatas[CharacterID].ATS;
         Speed.text = characterDatas[CharacterID].Speed;
         Range.text = characterDatas[CharacterID].Range;
+        Desc.text = characterDatas[CharacterID].CharacterDesc;
+        illust.sprite = characterDatas[CharacterID].illustration;
+        UpDis1.text = "+" + (characterDatas[CharacterID].Hp[um.UserCharacterData[CharacterID].CharacterLevel + 1] - characterDatas[CharacterID].Hp[um.UserCharacterData[CharacterID].CharacterLevel]).ToString();
+        UpDis2.text = "+" + (characterDatas[CharacterID].Damage[um.UserCharacterData[CharacterID].CharacterLevel + 1] - characterDatas[CharacterID].Damage[um.UserCharacterData[CharacterID].CharacterLevel]).ToString();
     }
 
     public void UnlockCharacter()
@@ -76,11 +83,6 @@ public class GuiManager : MonoBehaviour
     public void CharacterChange(int CharacterID)
     {
         UserInfoManager.Instance.userData.SelectCharacter = CharacterID;
-        for (int i = 0; i < CharacterPrefab.Length; i++)
-        {
-            CharacterPrefab[i].SetActive((CharacterID == i) ? true : false);
-            Popup_CharacterPrefab[i].SetActive((CharacterID == i) ? true : false);
-        }
         for (int i = 0; i < Skill_icons.Length; i++)
         {
             Skill_icons[i].sprite = characterDatas[CharacterID].icons[i];
