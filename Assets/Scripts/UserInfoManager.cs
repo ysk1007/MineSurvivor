@@ -12,6 +12,7 @@ public class UserData //유저 데이터 클래스
     public int GameMoney;
     public int GameGem;
     public int SelectCharacter;
+    public int[] Equip_Artifacts;
 }
 
 public class UserInfoManager : MonoBehaviour

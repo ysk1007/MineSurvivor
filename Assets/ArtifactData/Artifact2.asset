@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Artifact2
   m_EditorClassIdentifier: 
   Rate: 2
-  ArtifactId: 2
+  ArtifactId: 3
   ArtifactName: "\uB098\uBB34 \uBC29\uD328"
   ArtifactDesc: "\uD50C\uB808\uC774\uC5B4 \uC8FC\uC704\uB97C \uB3CC\uBA70\n\uACF5\uACA9\uC744
     \uB9C9\uC2B5\uB2C8\uB2E4."

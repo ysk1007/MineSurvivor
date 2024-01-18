@@ -21,6 +21,13 @@ public class Popup : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
+    public void ChangePopUp(Popup popup)
+    {
+        popup.Open();
+        popup.artifact = artifact;
+        Close();
+    }
+
     public void Equip(int index)
     {
         GuiManager.instance.ArtiEquip(index, artifact);
