@@ -33,7 +33,7 @@ namespace ES3Types
 				{
 					
 					case "Instance":
-						UnlockManager.Instance = reader.Read<UnlockManager>();
+						UnlockManager.Instance = reader.Read<UnlockManager>(ES3UserType_UnlockManager.Instance);
 						break;
 					case "DataExist":
 						instance.DataExist = reader.Read<System.Boolean>(ES3Type_bool.Instance);

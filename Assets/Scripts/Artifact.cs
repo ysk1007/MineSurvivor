@@ -7,18 +7,26 @@ public class Artifact : MonoBehaviour
 {
     public ArtifactData data;
     public Sprite[] frames;
-    Image icon;
+    public Sprite Null_img;
+    public Image icon;
     void Awake()
     {
+        this.icon = GetComponentsInChildren<Image>()[1];
         Init();
     }
 
     public void Init()
     {
         if (!data)
-            return;
-        icon = GetComponentsInChildren<Image>()[1];
-        icon.sprite = data.ArtifactIcon;
-        this.gameObject.GetComponent<Image>().sprite = frames[data.Rate.GetHashCode()];
+        {
+            this.icon.sprite = Null_img;
+            this.gameObject.GetComponent<Image>().sprite = Null_img;
+        }
+        else
+        {
+            this.icon = GetComponentsInChildren<Image>()[1];
+            this.icon.sprite = data.ArtifactIcon;
+            this.gameObject.GetComponent<Image>().sprite = frames[data.Rate.GetHashCode()];
+        }
     }
 }

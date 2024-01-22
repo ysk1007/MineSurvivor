@@ -16,6 +16,7 @@ public class UserCharacterData //게임 캐릭터 데이터
 public class UserArtifactData //게임 캐릭터 데이터
 {
     public bool ArtifactAble; // 해금 여부
+    public bool ArtifactEquip; // 장착 여부
     public int ArtifactLevel;
 }
 

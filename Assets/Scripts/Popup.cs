@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,7 @@ public class Popup : MonoBehaviour
 {
     public Sprite[] Artifact_Frames;
     public Color[] color;
-    public GameObject Object;
+    public GameObject[] Object;
     public ArtifactData artifact;
     public void Open()
     {
@@ -24,7 +25,7 @@ public class Popup : MonoBehaviour
     public void ChangePopUp(Popup popup)
     {
         popup.Open();
-        popup.artifact = artifact;
+        popup.artifact = artifact;  
         Close();
     }
 
@@ -34,8 +35,16 @@ public class Popup : MonoBehaviour
         Close();
     }
 
+    public void UnEquip()
+    {
+        GuiManager.instance.ArtiUnEquip(artifact.ArtifactId);
+        Close();
+    }
+
     public void OpenArti(GameObject gameObject)
     {
+        if (!gameObject.GetComponent<Artifact>().data)
+            return;
         ArtifactData data = gameObject.GetComponent<Artifact>().data;
         artifact = data;
         this.gameObject.SetActive(true);
@@ -45,7 +54,8 @@ public class Popup : MonoBehaviour
         this.gameObject.GetComponentsInChildren<Text>()[1].text = RateText(data.Rate);
         this.gameObject.GetComponentsInChildren<Text>()[1].color = color[RateIndex(data.Rate)];
         this.gameObject.GetComponentsInChildren<Text>()[2].text = string.Format(data.ArtifactDesc, data.baseDamge);
-        Object.SetActive((UnlockManager.Instance.UserArtifactData[data.ArtifactId].ArtifactAble) == true ? false : true) ;
+        Object[0].SetActive((UnlockManager.Instance.UserArtifactData[data.ArtifactId - 1].ArtifactEquip) == true ? true : false);
+        Object[1].SetActive((UnlockManager.Instance.UserArtifactData[data.ArtifactId - 1].ArtifactAble) == true ? false : true) ;
     }
 
     public string RateText(ArtifactData.ArtifactRate Rate)

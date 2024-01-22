@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using UnityEditor.Experimental;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,6 +22,7 @@ public class GuiManager : MonoBehaviour
     [Header(" # 유물 해금 오브젝트")]
     public GameObject[] lockArtifact;
     public GameObject[] ArtiSlots;
+    public Image[] EquipFrame;
 
     [Header(" # 업그레이드 팝업")]
     public Text CharacterName;
@@ -57,6 +59,7 @@ public class GuiManager : MonoBehaviour
         CharacterChange(ui.userData.SelectCharacter);
         UnlockCharacter();
         UnlockArtifact();
+        ArtiSetting();
     }
 
     private void LateUpdate()
@@ -122,12 +125,53 @@ public class GuiManager : MonoBehaviour
 
     public void ArtiEquip(int index,ArtifactData artifact)
     {
+        int[] newEquipSlots = ui.userData.Equip_Artifacts;
+
         ArtiSlots[index].GetComponent<Artifact>().data = artifact;
         ArtiSlots[index].GetComponent<Artifact>().Init();
-        int[] newEquipSlots = new int[4];
+
         newEquipSlots[index] = artifact.ArtifactId;
+
         ui.userData.Equip_Artifacts = newEquipSlots;
+
+        um.UserArtifactData[artifact.ArtifactId - 1].ArtifactEquip = true;
+
         ui.DataSave();
+        um.DataSave();
+        EquipFrame[artifact.ArtifactId - 1].enabled = true;
+    }
+
+    public void ArtiUnEquip(int ArtifactId)
+    {
+        int[] newEquipSlots = ui.userData.Equip_Artifacts;
+        for (int i = 0; i < newEquipSlots.Length; i++)
+        {
+            if (newEquipSlots[i] == ArtifactId)
+            {
+                newEquipSlots[i] = 0;
+                um.UserArtifactData[ArtifactId - 1].ArtifactEquip = false;
+                ArtiSlots[i].GetComponent<Artifact>().data = null;
+                ArtiSlots[i].GetComponent<Artifact>().Init();
+                break;
+            }
+        }
+
+        ui.DataSave();
+        um.DataSave();
+
+        EquipFrame[ArtifactId - 1].enabled = false;
+    }
+
+    public void ArtiSetting()
+    {
+        for (int i = 0; i < ui.userData.Equip_Artifacts.Length; i++)
+        {
+            if (ui.userData.Equip_Artifacts[i] == 0)
+                continue;
+            ArtiSlots[i].GetComponent<Artifact>().data = ArtifactDatas[ui.userData.Equip_Artifacts[i] - 1];
+            ArtiSlots[i].GetComponent<Artifact>().Init();
+            EquipFrame[ui.userData.Equip_Artifacts[i] - 1].enabled = true;
+        }
     }
 
     public void CharacterUpgrade()

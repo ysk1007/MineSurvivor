@@ -42,8 +42,13 @@ public class UserInfoManager : MonoBehaviour
         }
     }
 
+    public void DataCreate() //单捞磐 积己
+    {
+        userData.Equip_Artifacts = new int[4];
+        ES3.Save(keyName, userData);
+    }
 
-    public void DataSave() //单捞磐 积己
+    public void DataSave() //单捞磐 历厘
     {
         ES3.Save(keyName, userData);
     }
@@ -58,7 +63,7 @@ public class UserInfoManager : MonoBehaviour
         }
         else
         {
-            DataSave(); //绝栏搁 积己
+            DataCreate(); //绝栏搁 积己
             unlockManager.DataCreate();
         }
     }
