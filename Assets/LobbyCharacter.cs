@@ -5,129 +5,55 @@ using UnityEngine.EventSystems;
 
 public class LobbyCharacter : MonoBehaviour
 {
-    public float moveSpeed = 5f;
-
-    public float moveDuration;
-    public float idleDuration;
-
-    public float minMoveDuration = 1f; // 최소 이동 시간
-    public float maxMoveDuration = 3f; // 최대 이동 시간
-    public float minIdleDuration = 1f; // 최소 멈춤 시간
-    public float maxIdleDuration = 3f; // 최대 멈춤 시간
-
-    public float timer = 0f;
-    private bool isMoving = true;
-    private Vector2 moveDirection;
-    private Vector2 nextMoveDirection; // 다음 이동 방향
-
-    BoxCollider2D boxCollider2D;
+    public float moveSpeed = 3f; // 이동 속도
+    Vector2 Dir;
+    float Angle;
+    Animator anim;
+    bool moving;
 
     private void Awake()
     {
-        boxCollider2D = this.GetComponent<BoxCollider2D>();
-        moveDirection = GetRandomDirection();
-        SetRandomDurations();
-        SetRandomNextMoveDirection();
+        anim = this.GetComponent<Animator>();
     }
 
-    void Update()
+    private void Start()
     {
-        // 이동 또는 멈춤 상태에 따라 행동 결정
-        if (isMoving)
-        {
-            Move();
-        }
-        else
-        {
-            Idle();
-        }
-
-        // 충돌 체크
-        CheckCollision();
+        // 게임 시작시 처음으로 움직이도록 설정
+        MoveRandomDirection();
     }
 
-    void Move()
+    private void Update()
     {
-        Debug.Log("움직임");
-        // 이동
-        transform.Translate(moveDirection * moveSpeed * Time.deltaTime);
-        // 일정 시간이 지나면 멈춤 상태로 전환
-        timer += Time.deltaTime;
-        if (timer >= moveDuration)
+        if (!moving)
+            return;
+        if (Dir.x < 0)
         {
-            timer = 0f;
-            isMoving = false;
-
-            // 충돌 시 반대 방향으로 이동 후 다시 이동 상태로 전환
-            StartCoroutine(MoveInOppositeDirection());
+            transform.localScale = new Vector3(1.3f, transform.localScale.y, transform.localScale.z);
+        }
+        else if (Dir.x > 0)
+        {
+            transform.localScale = new Vector3(-1.3f, transform.localScale.y, transform.localScale.z);
         }
     }
 
-    IEnumerator MoveInOppositeDirection()
+    private void MoveRandomDirection()
     {
-        Vector2 originalMoveDirection = moveDirection;
-        moveDirection = GetOppositeDirection(originalMoveDirection);
-
-        // 잠시 반대 방향으로 이동
-        yield return new WaitForSeconds(0.5f);
-
-        // 이동을 멈추고 다음 이동 방향 설정
-        isMoving = true;
-        SetRandomDurations();
-        SetRandomNextMoveDirection();
+        moving = true;
+        anim.SetFloat("RunState", 0.2f);
+        // 랜덤한 방향으로 이동
+        Angle = Random.Range(0f, 360f);
+        Dir = new Vector2(Mathf.Cos(Angle * Mathf.Deg2Rad), Mathf.Sin(Angle * Mathf.Deg2Rad));
+        GetComponent<Rigidbody2D>().velocity = Dir * moveSpeed;
+        // 일정 시간 후에 쉬기
+        Invoke("StopMoving", Random.Range(2f, 4f));
     }
 
-    void Idle()
+    private void StopMoving()
     {
-        Debug.Log("정지");
-        // 일정 시간이 지나면 다음 행동을 결정하고 이동 상태로 전환
-        timer += Time.deltaTime;
-        if (timer >= idleDuration)
-        {
-            timer = 0f;
-            isMoving = true;
-            SetRandomDurations();
-            SetRandomNextMoveDirection();
-        }
-    }
-
-    void SetRandomDurations()
-    {
-        moveDuration = Random.Range(minMoveDuration, maxMoveDuration);
-        idleDuration = Random.Range(minIdleDuration, maxIdleDuration);
-    }
-
-    void SetRandomNextMoveDirection()
-    {
-        nextMoveDirection = GetRandomDirection();
-    }
-
-    void CheckCollision()
-    {
-        // BoxCollider2D의 크기를 사용하여 충돌 체크
-        Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position, boxCollider2D.size, 0f);
-
-        foreach (Collider2D collider in colliders)
-        {
-            // 특정 콜라이더에 충돌 시 이동을 멈추고 다음 이동 방향 설정
-            if (collider.CompareTag("Area"))
-            {
-                Debug.Log("충돌");
-                isMoving = false;
-                StartCoroutine(MoveInOppositeDirection());
-                break;
-            }
-        }
-    }
-
-    Vector2 GetRandomDirection()
-    {
-        float angle = Random.Range(0f, 360f);
-        return Quaternion.Euler(0, 0, angle) * Vector2.right;
-    }
-
-    Vector2 GetOppositeDirection(Vector2 direction)
-    {
-        return -direction;
+        moving = false;
+        anim.SetFloat("RunState", 0f);
+        // 움직임을 멈추고 일정 시간 후에 다시 움직이기
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        Invoke("MoveRandomDirection", Random.Range(3f, 4f));
     }
 }

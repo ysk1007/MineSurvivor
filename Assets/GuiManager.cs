@@ -47,6 +47,8 @@ public class GuiManager : MonoBehaviour
 
     public Image[] Skill_icons;
 
+    public Animator ChestAnim;
+
     private void Awake()
     {
         instance = this;
@@ -183,5 +185,61 @@ public class GuiManager : MonoBehaviour
         ui.userData.GameMoney -= value;
         ui.DataSave();
         um.DataSave();
+    }
+
+    public void ChestOpen()
+    {
+        ChestAnim.SetTrigger("Open");
+        RandomArtifact();
+    }
+
+    public void RandomArtifact()
+    {
+        int[] normal = { 0 };
+        int[] rare = { 1 };
+        int[] unique = { 2 };
+        int[] legendary = { 3 };
+        Random.Range(0, ArtifactDatas.Length);
+
+        for (int i = 0; i < 9; i++) // 10연차
+        {
+            switch (GenerateRandomValue())
+            {
+                case 0:
+                    Debug.Log(normal[(Random.Range(normal[0],normal.Length))]);
+                    break;
+                case 1:
+                    Debug.Log(rare[(Random.Range(normal[0], normal.Length))]);
+                    break;
+                case 2:
+                    Debug.Log(unique[(Random.Range(normal[0], normal.Length))]);
+                    break;
+                case 3:
+                    Debug.Log(legendary[(Random.Range(normal[0], normal.Length))]);
+                    break;
+            }
+        }
+    }
+
+    public int GenerateRandomValue()
+    {
+        float randomValue = Random.Range(0f, 100f); // 0에서 100 사이의 난수 생성
+
+        if (randomValue < 83.1f)
+        {
+            return 0;
+        }
+        else if (randomValue < 93.3f)
+        {
+            return 1;
+        }
+        else if (randomValue < 98.4f)
+        {
+            return 2;
+        }
+        else
+        {
+            return 3;
+        }
     }
 }
