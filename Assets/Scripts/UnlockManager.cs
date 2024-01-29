@@ -17,7 +17,8 @@ public class UserArtifactData //게임 캐릭터 데이터
 {
     public bool ArtifactAble; // 해금 여부
     public bool ArtifactEquip; // 장착 여부
-    public int ArtifactLevel;
+    public int ArtifactLevel; // 아티팩트 레벨
+    public int ArtifactExp; // 아티팩트 경험치
 }
 
 public class UnlockManager : MonoBehaviour

@@ -16,8 +16,10 @@ public class ArtifactData : ScriptableObject
     public Sprite ArtifactIcon;
 
     [Header(" # Status Info")]
-    public float baseDamge;
-    public int baseCount;
+    public int ArtiLevel;
+    public int ArtiExp;
+    public float[] baseDamge;
+    public int[] baseCount;
 
     [Header(" # Object")]
     public GameObject projectile;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
@@ -12,6 +13,7 @@ public class Popup : MonoBehaviour
     public Color[] color;
     public GameObject[] Object;
     public ArtifactData artifact;
+    public Button button;
     public void Open()
     {
         this.gameObject.SetActive(true);
@@ -27,6 +29,17 @@ public class Popup : MonoBehaviour
         popup.Open();
         popup.artifact = artifact;  
         Close();
+    }
+
+    public void ChestPopOpen()
+    {
+        this.gameObject.transform.localScale = Vector3.one;
+        button.enabled = true;
+    }
+
+    public void ChestPopClose()
+    {
+        this.gameObject.transform.localScale = Vector3.zero;
     }
 
     public void Equip(int index)
@@ -53,9 +66,44 @@ public class Popup : MonoBehaviour
         this.gameObject.GetComponentsInChildren<Text>()[0].text = data.ArtifactName;
         this.gameObject.GetComponentsInChildren<Text>()[1].text = RateText(data.Rate);
         this.gameObject.GetComponentsInChildren<Text>()[1].color = color[RateIndex(data.Rate)];
-        this.gameObject.GetComponentsInChildren<Text>()[2].text = string.Format(data.ArtifactDesc, data.baseDamge);
-        Object[0].SetActive((UnlockManager.Instance.UserArtifactData[data.ArtifactId - 1].ArtifactEquip) == true ? true : false);
-        Object[1].SetActive((UnlockManager.Instance.UserArtifactData[data.ArtifactId - 1].ArtifactAble) == true ? false : true) ;
+        this.gameObject.GetComponentsInChildren<Text>()[2].text = string.Format(data.ArtifactDesc, data.baseDamge[data.ArtiLevel]);
+
+        int maxValue = GuiManager.instance.ArtifactUpgradeExp[UnlockManager.Instance.UserArtifactData[data.ArtifactId - 1].ArtifactLevel];
+        int CurExp = UnlockManager.Instance.UserArtifactData[data.ArtifactId - 1].ArtifactExp;
+
+        this.gameObject.GetComponentsInChildren<TextMeshProUGUI>()[0].text = (UnlockManager.Instance.UserArtifactData[data.ArtifactId - 1].ArtifactLevel + 1).ToString();
+        this.gameObject.GetComponentsInChildren<TextMeshProUGUI>()[1].text = CurExp.ToString() + "/" + maxValue.ToString();
+
+        this.gameObject.GetComponentsInChildren<Slider>()[0].value = CurExp;
+        this.gameObject.GetComponentsInChildren<Slider>()[0].maxValue = maxValue;
+
+        bool isEquip = (UnlockManager.Instance.UserArtifactData[data.ArtifactId - 1].ArtifactEquip);
+        bool isAble = (UnlockManager.Instance.UserArtifactData[data.ArtifactId - 1].ArtifactAble);
+
+        // 0 장착, 1 해제, 2 미보유 버튼
+        if (!isAble)
+        {
+            Object[0].SetActive(false);
+            Object[1].SetActive(false);
+
+            Object[2].SetActive(true);
+        }
+        else
+        {
+            Object[2].SetActive(false);
+            if (isEquip) //장착 중
+            {
+                Object[0].SetActive(false);
+                Object[1].SetActive(true);
+
+            }
+            else if (!isEquip)
+            {
+                Object[0].SetActive(true);
+                Object[1].SetActive(false);
+
+            }   
+        }
     }
 
     public string RateText(ArtifactData.ArtifactRate Rate)

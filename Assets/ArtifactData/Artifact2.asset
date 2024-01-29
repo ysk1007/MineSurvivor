@@ -18,6 +18,13 @@ MonoBehaviour:
   ArtifactDesc: "\uD50C\uB808\uC774\uC5B4 \uC8FC\uC704\uB97C \uB3CC\uBA70\n\uACF5\uACA9\uC744
     \uB9C9\uC2B5\uB2C8\uB2E4."
   ArtifactIcon: {fileID: 21300000, guid: cd631279bfdecd144ac4f4f118e669d4, type: 3}
-  baseDamge: 1
-  baseCount: 0
+  ArtiLevel: 0
+  ArtiExp: 0
+  baseDamge:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  baseCount: 
   projectile: {fileID: 0}

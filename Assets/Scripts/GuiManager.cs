@@ -39,6 +39,7 @@ public class GuiManager : MonoBehaviour
     public Text NextUpLevel;
     public Text price;
     public int[] UpgradePrice;
+    public int[] ArtifactUpgradeExp;
 
     UnlockManager um;
     UserInfoManager ui;
@@ -53,6 +54,7 @@ public class GuiManager : MonoBehaviour
     public GameObject ArtiList;
     public Artifact[] Artifactx10;
     bool GetSpecialArti;
+    Popup pop;
 
     private void Awake()
     {
@@ -66,7 +68,6 @@ public class GuiManager : MonoBehaviour
         CharacterChange(ui.userData.SelectCharacter);
         UnlockCharacter();
         UnlockArtifact();
-        ArtiSetting();
         Artifactx10 = ArtiList.GetComponentsInChildren<Artifact>();
     }
 
@@ -115,10 +116,11 @@ public class GuiManager : MonoBehaviour
 
     public void UnlockArtifact()
     {
-        for (int i = 0; i < lockCharacter.Length; i++)
+        for (int i = 0; i < lockArtifact.Length; i++)
         {
             lockArtifact[i].SetActive(!um.UserArtifactData[i].ArtifactAble);
         }
+        ArtiSetting();
     }
 
     public void CharacterChange(int CharacterID)
@@ -193,15 +195,17 @@ public class GuiManager : MonoBehaviour
         um.DataSave();
     }
 
-    public void ChestOpen()
+    public void ChestOpen(Button button)
     {
         if (GetSpecialArti)
         {
             ChestAnim.SetTrigger("Special");
+            button.enabled = false;
         }
         else
         {
             ChestAnim.SetTrigger("Open");
+            button.enabled = false;
         }
     }
 
@@ -210,8 +214,14 @@ public class GuiManager : MonoBehaviour
         ChestAnim.SetTrigger("Skip");
     }
 
+    public void ChestComplite(Popup popup)
+    {
+        ChestAnim.SetTrigger("Complite");
+    }
+
     public void RandomArtifact()
     {
+        ChestResult.Clear();
         GetSpecialArti = false;
         int[] normal = { 0 };
         int[] rare = { 1 };
@@ -219,7 +229,7 @@ public class GuiManager : MonoBehaviour
         int[] legendary = { 3 };
         Random.Range(0, ArtifactDatas.Length);
 
-        for (int i = 0; i < 9; i++) // 10연차
+        for (int i = 0; i < 10; i++) // 10연차
         {
             int index;
             switch (GenerateRandomValue())
@@ -245,11 +255,16 @@ public class GuiManager : MonoBehaviour
             ChestResult.Add(ArtifactDatas[index]);
         }
 
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < 10; i++)
         {
             Artifactx10[i].data = ChestResult[i];
             Artifactx10[i].Init();
+            um.UserArtifactData[Artifactx10[i].data.ArtifactId - 1].ArtifactAble = true;
+            um.UserArtifactData[Artifactx10[i].data.ArtifactId - 1].ArtifactExp++;
+            um.UserArtifactData[Artifactx10[i].data.ArtifactId - 1].ArtifactLevel = 
+                ArtiLevel(um.UserArtifactData[Artifactx10[i].data.ArtifactId - 1].ArtifactExp);
         }
+        um.DataSave();
     }
 
     public int GenerateRandomValue()
@@ -271,6 +286,30 @@ public class GuiManager : MonoBehaviour
         else
         {
             return 3;
+        }
+    }
+
+    public int ArtiLevel(int i)
+    {
+        if (i < 2)
+        {
+            return 0;
+        }
+        else if (i < 4)
+        {
+            return 1;
+        }
+        else if (i < 8)
+        {
+            return 2;
+        }
+        else if (i < 16)
+        {
+            return 3;
+        }
+        else
+        {
+            return 0;
         }
     }
 }

@@ -12,7 +12,7 @@ public class TabManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        TabClick(2);
+        TabClick(0);
     }
 
     public void TabClick(int n) {
@@ -21,6 +21,10 @@ public class TabManager : MonoBehaviour
             //if문으로 true,false 하는것을 축약
             Tab[i].SetActive(i == n);
             TabBtnImage[i].sprite = i == n ? SelectSprite : IdleSprite;
+        }
+        if (n == 1)
+        {
+            GuiManager.instance.UnlockArtifact();
         }
     }
 }
