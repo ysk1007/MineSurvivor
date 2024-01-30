@@ -71,11 +71,10 @@ public class Popup : MonoBehaviour
         int maxValue = GuiManager.instance.ArtifactUpgradeExp[UnlockManager.Instance.UserArtifactData[data.ArtifactId - 1].ArtifactLevel];
         int CurExp = UnlockManager.Instance.UserArtifactData[data.ArtifactId - 1].ArtifactExp;
 
+        this.gameObject.GetComponentsInChildren<TextMeshProUGUI>()[1].text = (UnlockManager.Instance.UserArtifactData[data.ArtifactId - 1].ArtifactLevel > 3) ? "MAX" : CurExp.ToString() + "/" + maxValue.ToString();
         this.gameObject.GetComponentsInChildren<TextMeshProUGUI>()[0].text = (UnlockManager.Instance.UserArtifactData[data.ArtifactId - 1].ArtifactLevel + 1).ToString();
-        this.gameObject.GetComponentsInChildren<TextMeshProUGUI>()[1].text = CurExp.ToString() + "/" + maxValue.ToString();
-
-        this.gameObject.GetComponentsInChildren<Slider>()[0].value = CurExp;
         this.gameObject.GetComponentsInChildren<Slider>()[0].maxValue = maxValue;
+        this.gameObject.GetComponentsInChildren<Slider>()[0].value = CurExp;
 
         bool isEquip = (UnlockManager.Instance.UserArtifactData[data.ArtifactId - 1].ArtifactEquip);
         bool isAble = (UnlockManager.Instance.UserArtifactData[data.ArtifactId - 1].ArtifactAble);

@@ -14,6 +14,10 @@ public class GuiManager : MonoBehaviour
 
     [Header(" # 오리지널 유물 데이터")]
     public ArtifactData[] ArtifactDatas;
+    public ArtifactData[] NormalArtifactDatas;
+    public ArtifactData[] RareArtifactDatas;
+    public ArtifactData[] UniqueArtifactDatas;
+    public ArtifactData[] LegendaryArtifactDatas;
 
     [Header(" # 캐릭터 선택 해금 오브젝트")]
     public GameObject[] lockCharacter;
@@ -54,6 +58,7 @@ public class GuiManager : MonoBehaviour
     public GameObject ArtiList;
     public Artifact[] Artifactx10;
     bool GetSpecialArti;
+    bool Blue, Gold, Purple;
     Popup pop;
 
     private void Awake()
@@ -172,7 +177,7 @@ public class GuiManager : MonoBehaviour
         EquipFrame[ArtifactId - 1].enabled = false;
     }
 
-    public void ArtiSetting()
+    public void ArtiSetting() // 유저 장착 아티팩트 세팅
     {
         for (int i = 0; i < ui.userData.Equip_Artifacts.Length; i++)
         {
@@ -193,6 +198,22 @@ public class GuiManager : MonoBehaviour
         ui.userData.GameMoney -= value;
         ui.DataSave();
         um.DataSave();
+    }
+
+    public void ChestSelect(int i)
+    {
+        switch (i)
+        {
+            case 0:
+                ChestAnim.SetBool("Blue", true);
+                break;
+            case 1:
+                ChestAnim.SetBool("Gold", true);
+                break;
+            case 2:
+                ChestAnim.SetBool("Purple", true);
+                break;
+        }
     }
 
     public void ChestOpen(Button button)
@@ -216,6 +237,9 @@ public class GuiManager : MonoBehaviour
 
     public void ChestComplite(Popup popup)
     {
+        ChestAnim.SetBool("Blue", false);
+        ChestAnim.SetBool("Gold", false);
+        ChestAnim.SetBool("Purple", false);
         ChestAnim.SetTrigger("Complite");
     }
 
@@ -231,61 +255,51 @@ public class GuiManager : MonoBehaviour
 
         for (int i = 0; i < 10; i++) // 10연차
         {
-            int index;
-            switch (GenerateRandomValue())
-            {
-                case 0:
-                    index = normal[(Random.Range(0, normal.Length))];
-                    break;
-                case 1:
-                    index = rare[(Random.Range(0, rare.Length))];
-                    break;
-                case 2:
-                    index = unique[(Random.Range(0, unique.Length))];
-                    GetSpecialArti = true;
-                    break;
-                case 3:
-                    index = legendary[(Random.Range(0, legendary.Length))];
-                    GetSpecialArti = true;
-                    break;
-                default:
-                    index = 0;
-                    break;
-            }
-            ChestResult.Add(ArtifactDatas[index]);
+            ArtifactData[] Artipool = GenerateRandomValue();
+            ChestResult.Add(Artipool[(Random.Range(0, Artipool.Length))]);
         }
 
         for (int i = 0; i < 10; i++)
         {
             Artifactx10[i].data = ChestResult[i];
             Artifactx10[i].Init();
-            um.UserArtifactData[Artifactx10[i].data.ArtifactId - 1].ArtifactAble = true;
-            um.UserArtifactData[Artifactx10[i].data.ArtifactId - 1].ArtifactExp++;
-            um.UserArtifactData[Artifactx10[i].data.ArtifactId - 1].ArtifactLevel = 
-                ArtiLevel(um.UserArtifactData[Artifactx10[i].data.ArtifactId - 1].ArtifactExp);
+
+            if (Artifactx10[i].data.Rate.GetHashCode() > 1)
+                GetSpecialArti = true;
+
+            // 아티팩트 경험치가 MAX 일 때
+            if (um.UserArtifactData[Artifactx10[i].data.ArtifactId - 1].ArtifactExp > GuiManager.instance.ArtifactUpgradeExp[GuiManager.instance.ArtifactUpgradeExp.Length - 1])
+                um.UserArtifactData[Artifactx10[i].data.ArtifactId - 1].ArtifactLevel = 4;
+            else
+            {
+                um.UserArtifactData[Artifactx10[i].data.ArtifactId - 1].ArtifactAble = true;
+                um.UserArtifactData[Artifactx10[i].data.ArtifactId - 1].ArtifactExp++;
+                um.UserArtifactData[Artifactx10[i].data.ArtifactId - 1].ArtifactLevel =
+                    ArtiLevel(um.UserArtifactData[Artifactx10[i].data.ArtifactId - 1].ArtifactExp);
+            }
         }
         um.DataSave();
     }
 
-    public int GenerateRandomValue()
+    public ArtifactData[] GenerateRandomValue()
     {
         float randomValue = Random.Range(0f, 100f); // 0에서 100 사이의 난수 생성
 
         if (randomValue < 74f)
         {
-            return 0;
+            return NormalArtifactDatas;
         }
         else if (randomValue < 89.3f)
         {
-            return 1;
+            return RareArtifactDatas;
         }
         else if (randomValue < 98.4f)
         {
-            return 2;
+            return UniqueArtifactDatas;
         }
         else
         {
-            return 3;
+            return LegendaryArtifactDatas;
         }
     }
 
@@ -309,7 +323,7 @@ public class GuiManager : MonoBehaviour
         }
         else
         {
-            return 0;
+            return 4;
         }
     }
 }

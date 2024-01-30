@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d621a166307f29248a2d2af31813ca99, type: 3}
+  m_Name: Artifact 5
+  m_EditorClassIdentifier: 
+  Rate: 1
+  ArtifactId: 5
+  ArtifactName: "\uB3C4\uB451\uC758 \uBCF4\uB530\uB9AC"
+  ArtifactDesc: "\uC544\uC774\uD15C \uD68D\uB4DD \uBC94\uC704 +{0}%"
+  ArtifactIcon: {fileID: 21300000, guid: 7208ba9af28cbd445ba0b884a5ca60db, type: 3}
+  ArtiLevel: 0
+  ArtiExp: 0
+  baseDamge:
+  - 5
+  - 10
+  - 15
+  - 20
+  - 25
+  baseCount: 
+  projectile: {fileID: 0}
