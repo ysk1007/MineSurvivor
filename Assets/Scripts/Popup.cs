@@ -105,6 +105,20 @@ public class Popup : MonoBehaviour
         }
     }
 
+    public void LevelPopupSetting()
+    {
+        int CharacterId = UserInfoManager.Instance.userData.SelectCharacter;
+        int Level = UnlockManager.Instance.UserCharacterData[CharacterId].CharacterLevel;
+        this.gameObject.SetActive(true);
+        this.gameObject.GetComponentsInChildren<TextMeshProUGUI>()[0].text = (Level + 1).ToString();
+
+        this.gameObject.GetComponentsInChildren<Text>()[2].text = GuiManager.instance.characterDatas[CharacterId].Hp[Level - 1].ToString();
+        this.gameObject.GetComponentsInChildren<Text>()[3].text = GuiManager.instance.characterDatas[CharacterId].Hp[Level].ToString();
+
+        this.gameObject.GetComponentsInChildren<Text>()[5].text = GuiManager.instance.characterDatas[CharacterId].Damage[Level - 1].ToString();
+        this.gameObject.GetComponentsInChildren<Text>()[6].text = GuiManager.instance.characterDatas[CharacterId].Damage[Level].ToString();
+    }
+
     public string RateText(ArtifactData.ArtifactRate Rate)
     {
         string ResultStr;

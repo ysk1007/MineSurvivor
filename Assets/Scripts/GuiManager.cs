@@ -189,7 +189,7 @@ public class GuiManager : MonoBehaviour
         }
     }
 
-    public void CharacterUpgrade()
+    public void CharacterUpgrade(Popup popup)
     {
         int value = UpgradePrice[um.UserCharacterData[ui.userData.SelectCharacter].CharacterLevel];
         if (ui.userData.GameMoney < value)
@@ -198,6 +198,7 @@ public class GuiManager : MonoBehaviour
         ui.userData.GameMoney -= value;
         ui.DataSave();
         um.DataSave();
+        popup.LevelPopupSetting();
     }
 
     public void ChestSelect(int i)
