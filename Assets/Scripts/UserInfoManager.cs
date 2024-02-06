@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -9,10 +10,13 @@ public class UserData //유저 데이터 클래스
 {
     public string UserName; //닉네임
     public string UserId; //고유 아이디
-    public int GameMoney;
-    public int GameGem;
-    public int SelectCharacter;
-    public int[] Equip_Artifacts;
+    public int GameMoney; // 골드 재화
+    public int GameGem; // 보석 재화
+    public int SelectCharacter; // 선택된 캐릭터
+    public int[] Equip_Artifacts; // 장착 하고 있는 아티팩트 넘버
+    public string LastPlayTime; // 마지막 접속 시간
+    public int Attendance; // 출석일
+    public bool TodayStamp;
 }
 
 public class UserInfoManager : MonoBehaviour
@@ -25,6 +29,8 @@ public class UserInfoManager : MonoBehaviour
     private string fileName = "UserData.ms"; //파일 이름
 
     public UserData userData;
+    // 이전에 저장한 시간을 보관할 변수
+    private DateTime LastPlayTime;
 
     private void Awake()
     {
@@ -39,17 +45,20 @@ public class UserInfoManager : MonoBehaviour
             Instance = this;
             DataLoad();
             DontDestroyOnLoad(gameObject);
+            NextDay();
         }
     }
 
     public void DataCreate() //데이터 생성
     {
         userData.Equip_Artifacts = new int[4];
+        userData.LastPlayTime = KoreaDate();
         ES3.Save(keyName, userData);
     }
 
     public void DataSave() //데이터 저장
     {
+        //userData.LastPlayTime = KoreaDate();
         ES3.Save(keyName, userData);
     }
 
@@ -66,5 +75,83 @@ public class UserInfoManager : MonoBehaviour
             DataCreate(); //없으면 생성
             unlockManager.DataCreate();
         }
+    }
+
+    public void Stamp()
+    {
+        if (userData.TodayStamp)
+            return;
+        userData.TodayStamp = true;
+        userData.LastPlayTime = KoreaDate();
+        DailyReward();
+        ES3.Save(keyName, userData);
+    }
+
+    void NextDay()
+    {
+        // 이전에 저장한 시간 가져오기 (첫 실행 시에는 기본값으로 현재 시간 설정)
+        string savedTime = userData.LastPlayTime;
+        LastPlayTime = string.IsNullOrEmpty(savedTime) ? DateTime.UtcNow : DateTime.Parse(savedTime);
+
+        // 현재 시간 가져오기
+        DateTime currentTime = DateTime.UtcNow;
+
+        // 대한민국 시간대로 변환
+        TimeZoneInfo koreaTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Korea Standard Time");
+        DateTime koreanCurrentTime = TimeZoneInfo.ConvertTime(currentTime, koreaTimeZone);
+
+        // 이전에 저장한 시간이 오늘보다 이전인지 확인
+        if (LastPlayTime.Date < koreanCurrentTime.Date)
+        {
+            // 하루가 지났으므로 어떤 작업을 수행합니다.
+            Debug.Log("하루가 지났습니다.");
+            userData.TodayStamp = false;
+            GuiManager.instance.DailyReward.newDay = true;
+        }
+        else
+        {
+            // 하루가 지났으므로 어떤 작업을 수행합니다.
+            Debug.Log("아직 입니다.");
+        }
+    }
+
+    string KoreaDate()
+    {
+        // 현재 시간 가져오기
+        DateTime currentTime = DateTime.UtcNow;
+
+        // 대한민국 시간대로 변환
+        TimeZoneInfo koreaTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Korea Standard Time");
+        DateTime koreanCurrentTime = TimeZoneInfo.ConvertTime(currentTime, koreaTimeZone);
+        return koreanCurrentTime.ToString();
+    }
+
+    void DailyReward()
+    {
+        switch (userData.Attendance)
+        {
+            case 0:
+                userData.GameMoney += 5000;
+                break;
+            case 1:
+                userData.GameMoney += 1;
+                break;
+            case 2:
+                userData.GameGem += 100;
+                break;
+            case 3:
+                userData.GameMoney += 10000;
+                break;
+            case 4:
+                userData.GameMoney += 2;
+                break;
+            case 5:
+                userData.GameGem += 200;
+                break;
+            case 6:
+                userData.GameGem += 1000;
+                break;
+        }
+
     }
 }

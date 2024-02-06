@@ -42,6 +42,16 @@ public class Popup : MonoBehaviour
         this.gameObject.transform.localScale = Vector3.zero;
     }
 
+    public void PopupOne()
+    {
+        this.gameObject.transform.localScale = Vector3.one;
+    }
+
+    public void PopupZero()
+    {
+        this.gameObject.transform.localScale = Vector3.zero;
+    }
+
     public void Equip(int index)
     {
         GuiManager.instance.ArtiEquip(index, artifact);

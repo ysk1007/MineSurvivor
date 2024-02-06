@@ -7,7 +7,13 @@ using static Cinemachine.DocumentationSortingAttribute;
 
 public class HUD : MonoBehaviour
 {
-    public enum InfoType { Exp, Level, Kill, Timer, Health, IronCount, GoldCount, DiamondCount, HealthText, ExpText, ChargeBar, UserGold, UserGem, UserName}
+    public enum InfoType { 
+        Exp, Level, Kill, Timer, Health, 
+        IronCount, GoldCount, DiamondCount, 
+        HealthText, ExpText, ChargeBar, 
+        UserGold, UserGem, UserName,
+        DailyNotice
+        }
     public InfoType type;
     public Image image;
 
@@ -81,6 +87,9 @@ public class HUD : MonoBehaviour
                 break;
             case InfoType.UserName:
                 thisText.text = UserInfoManager.Instance.userData.UserName;
+                break;
+            case InfoType.DailyNotice:
+                image.enabled = (UserInfoManager.Instance.userData.TodayStamp) ? false : true;
                 break;
         }
     }

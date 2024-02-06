@@ -61,6 +61,9 @@ public class GuiManager : MonoBehaviour
     bool Blue, Gold, Purple;
     Popup pop;
 
+    [Header(" # 출석 화면 관련")]
+    public RewardManager DailyReward;
+
     private void Awake()
     {
         instance = this;
