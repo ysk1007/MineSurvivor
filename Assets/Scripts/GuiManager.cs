@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using TMPro;
 using UnityEditor.Experimental;
 using UnityEngine;
 using UnityEngine.UI;
@@ -63,6 +64,11 @@ public class GuiManager : MonoBehaviour
 
     [Header(" # 출석 화면 관련")]
     public RewardManager DailyReward;
+
+    [Header(" # Log 관련")]
+    public Animator LogAnim;
+    public TextMeshProUGUI PlusText;
+    public Text ErrorText;
 
     private void Awake()
     {
@@ -196,12 +202,15 @@ public class GuiManager : MonoBehaviour
     {
         int value = UpgradePrice[um.UserCharacterData[ui.userData.SelectCharacter].CharacterLevel];
         if (ui.userData.GameMoney < value)
-            return;
-        um.UserCharacterData[ui.userData.SelectCharacter].CharacterLevel++;
-        ui.userData.GameMoney -= value;
-        ui.DataSave();
-        um.DataSave();
-        popup.LevelPopupSetting();
+            PrintLog();
+        else
+        {
+            um.UserCharacterData[ui.userData.SelectCharacter].CharacterLevel++;
+            ui.userData.GameMoney -= value;
+            ui.DataSave();
+            um.DataSave();
+            popup.LevelPopupSetting();
+        }
     }
 
     public void ChestSelect(int i)
@@ -329,5 +338,17 @@ public class GuiManager : MonoBehaviour
         {
             return 4;
         }
+    }
+
+    public void PrintLog(string text, Color color)
+    {
+        PlusText.text = "+" + text;
+        PlusText.color = color;
+        LogAnim.SetTrigger("Plus");
+    }
+
+    public void PrintLog()
+    {
+        LogAnim.SetTrigger("Error");
     }
 }

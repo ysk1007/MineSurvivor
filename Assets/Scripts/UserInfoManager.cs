@@ -138,21 +138,25 @@ public class UserInfoManager : MonoBehaviour
         {
             case 0:
                 userData.GameMoney += 5000;
+                RewardManager.instance.CollectReward(0, 5000);
                 break;
             case 1:
                 userData.GameMoney += 1;
                 break;
             case 2:
                 userData.GameGem += 100;
+                RewardManager.instance.CollectReward(1, 100);
                 break;
             case 3:
                 userData.GameMoney += 10000;
+                RewardManager.instance.CollectReward(0, 10000);
                 break;
             case 4:
                 userData.GameMoney += 2;
                 break;
             case 5:
                 userData.GameGem += 200;
+                RewardManager.instance.CollectReward(1, 200);
                 break;
             case 6:
                 userData.GameGem += 1000;

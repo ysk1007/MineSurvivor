@@ -5,21 +5,25 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using UnityEngine;
+using UnityEngine.UIElements;
 using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 using static UnityEngine.Rendering.DebugUI;
 using Random = UnityEngine.Random;
 
 public class RewardManager : MonoBehaviour
 {
+    public static RewardManager instance;
+
     public bool newDay;
     public int attendance;
     public Animator[] RewardAnims; // 스탬프 애니메이션
     public GameObject[] TodayRewardFocus; // 오늘의 보상 포커스
+    [SerializeField] private Color[] color;
 
-    [SerializeField] private GameObject coinPrefab;
-    [SerializeField] private Transform coinParent;
+    [SerializeField] private GameObject[] RewardPrefabs;
+    [SerializeField] private Transform RewardParent;
     [SerializeField] private Transform spawnLocation;
-    [SerializeField] private Transform endPosition;
+    [SerializeField] private Transform[] endPositions;
     [SerializeField] private float duration;
     [SerializeField] private float moveSpeed;
     [SerializeField] private int coinAmount;
@@ -28,7 +32,12 @@ public class RewardManager : MonoBehaviour
     [SerializeField] private float minY;
     [SerializeField] private float maxY;
 
-    List<GameObject> coins = new List<GameObject>();
+    List<GameObject> Rewards = new List<GameObject>();
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -52,21 +61,21 @@ public class RewardManager : MonoBehaviour
         }
     }
 
-    public async void CollectCoins(int value)
+    public async void CollectReward(int type, int value)
     {
-        UserInfoManager.Instance.userData.GameMoney += value;
+        GuiManager.instance.PrintLog(value.ToString(), color[type]);
         // 리셋
-        for (int i = 0; i < coins.Count; i++)
+        for (int i = 0; i < Rewards.Count; i++)
         {
-            Destroy(coins[i]);
+            Destroy(Rewards[i]);
         }
-        coins.Clear();
+        Rewards.Clear();
 
         // 코인 생성
         for (int i = 0; i < coinAmount; i++)
         {
             List<UniTask> moveCoinTask = new List<UniTask>();
-            GameObject coinInstance = Instantiate(coinPrefab, coinParent);
+            GameObject RewardInstance = Instantiate(RewardPrefabs[type], RewardParent);
 
             float xPos = spawnLocation.position.x + Random.Range(minX, maxX);
             float yPos = spawnLocation.position.y + Random.Range(minY, maxY);
@@ -74,30 +83,31 @@ public class RewardManager : MonoBehaviour
             //coinInstance.transform.position = new Vector3(xPos, yPos);
             Vector3 newPos = new Vector3(xPos, yPos);
 
-            coins.Add(coinInstance);
+            Rewards.Add(RewardInstance);
             //await MoveObject(coins[i].transform, newPos);
-            moveCoinTask.Add(MoveObject(coins[i].transform, newPos));
+            moveCoinTask.Add(MoveObject(Rewards[i].transform, newPos));
         }
 
         await UniTask.Delay(TimeSpan.FromSeconds(0.5f));
 
         // 움직임
-        await MoveCoinsTask(value);
+        await MoveCoinsTask(type,value);
     }
 
-    private async UniTask MoveCoinsTask(int value)
+    private async UniTask MoveCoinsTask(int type, int value)
     {
         List<UniTask> moveCoinTask = new List<UniTask>();
-        for (int i = 0; i < coins.Count; i++)
+        for (int i = 0; i < Rewards.Count; i++)
         {
-            moveCoinTask.Add(MoveCoinTask(i));
+            moveCoinTask.Add(MoveCoinTask(type,i));
             await UniTask.Delay(TimeSpan.FromSeconds(0.05f));
         }
     }
 
-    private async UniTask MoveCoinTask(int i)
+    private async UniTask MoveCoinTask(int type, int i)
     {
-        await MoveObject(coins[i].transform, endPosition.position);
+        await MoveObject(Rewards[i].transform, endPositions[type].position);
+        Destroy(Rewards[i]);
     }
 
     async UniTask MoveObject(Transform coin, Vector3 target)
