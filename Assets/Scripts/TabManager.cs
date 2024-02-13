@@ -12,7 +12,7 @@ public class TabManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        TabClick(0);
+        TabClick(2);
     }
 
     public void TabClick(int n) {

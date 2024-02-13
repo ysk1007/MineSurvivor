@@ -103,14 +103,20 @@ public class UserInfoManager : MonoBehaviour
         // 이전에 저장한 시간이 오늘보다 이전인지 확인
         if (LastPlayTime.Date < koreanCurrentTime.Date)
         {
-            // 하루가 지났으므로 어떤 작업을 수행합니다.
+            // 하루가 지났음
             Debug.Log("하루가 지났습니다.");
+
+            if (userData.TodayStamp) // 어제 보상을 받았을 경우
+                userData.Attendance++;
+
+            if (userData.Attendance > 6) // 주간 보상을 모두 받음
+                userData.Attendance = 0;
+
             userData.TodayStamp = false;
             GuiManager.instance.DailyReward.newDay = true;
         }
         else
         {
-            // 하루가 지났으므로 어떤 작업을 수행합니다.
             Debug.Log("아직 입니다.");
         }
     }

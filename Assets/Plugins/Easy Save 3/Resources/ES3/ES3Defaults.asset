@@ -34,6 +34,11 @@ MonoBehaviour:
     - Assembly-CSharp-firstpass
     - Cinemachine
     - NavMeshPlus
+    - UniTask
+    - UniTask.Addressables
+    - UniTask.DOTween
+    - UniTask.Linq
+    - UniTask.TextMeshPro
     showAdvancedSettings: 1
   addMgrToSceneAutomatically: 0
   autoUpdateReferences: 1
