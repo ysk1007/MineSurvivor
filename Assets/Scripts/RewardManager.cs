@@ -63,7 +63,10 @@ public class RewardManager : MonoBehaviour
 
     public async void CollectReward(int type, int value)
     {
-        GuiManager.instance.PrintLog(value.ToString(), color[type]);
+        if (type != 2)
+        {
+            GuiManager.instance.PrintLog(value.ToString(), color[type]);
+        }
         // ¸®¼Â
         for (int i = 0; i < Rewards.Count; i++)
         {

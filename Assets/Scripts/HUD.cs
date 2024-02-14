@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using static Cinemachine.DocumentationSortingAttribute;
@@ -12,20 +13,29 @@ public class HUD : MonoBehaviour
         IronCount, GoldCount, DiamondCount, 
         HealthText, ExpText, ChargeBar, 
         UserGold, UserGem, UserName,
-        DailyNotice
-        }
+        DailyNotice, MissionNotice, 
+        TodayProgress, WeekProgress, // 활약도
+        TodaySlider, WeekSlider, // 슬라이더
+        TodayRewardSlider, WeekRewardSlider, // 보상 슬라이더
+        TodayMissionValue, WeekMissionValue, // 텍스트 Value
+        TodayMissionImage, WeekMissionImage
+    }
+
+    public int index;
     public InfoType type;
     public Image image;
 
     Text thisText;
     Slider thisSlider;
     TextMeshProUGUI TextMeshProUGUI;
+    Image thisimage;
 
     private void Awake()
     {
         thisText = GetComponent<Text>();
         thisSlider = GetComponent<Slider>();
         TextMeshProUGUI = GetComponent<TextMeshProUGUI>();
+        thisimage = GetComponent<Image>();
     }
 
     private void LateUpdate()
@@ -91,6 +101,41 @@ public class HUD : MonoBehaviour
             case InfoType.DailyNotice:
                 image.enabled = (UserInfoManager.Instance.userData.TodayStamp) ? false : true;
                 break;
+            case InfoType.MissionNotice:
+                break;
+            case InfoType.TodayProgress:
+                TextMeshProUGUI.text = UserInfoManager.Instance.userData.TodayProgress.ToString();
+                break;
+            case InfoType.WeekProgress:
+                TextMeshProUGUI.text = UserInfoManager.Instance.userData.WeekProgress.ToString();
+                break;
+            case InfoType.TodaySlider:
+                thisSlider.value = UserInfoManager.Instance.userData.TodayMissionValue[index];
+                break;
+            case InfoType.WeekSlider:
+                thisSlider.value = UserInfoManager.Instance.userData.WeekMissionValue[index];
+                break;
+            case InfoType.TodayRewardSlider:
+                thisSlider.value = UserInfoManager.Instance.userData.TodayProgress;
+                break;
+            case InfoType.WeekRewardSlider:
+                thisSlider.value = UserInfoManager.Instance.userData.WeekProgress;
+                break;
+            case InfoType.TodayMissionValue:
+                TextMeshProUGUI.text = UserInfoManager.Instance.userData.TodayMissionValue[index].ToString() +"/"+ MissionManager.instance.TodaySlider[index].maxValue.ToString();
+                break;
+            case InfoType.WeekMissionValue:
+                TextMeshProUGUI.text = UserInfoManager.Instance.userData.WeekMissionValue[index].ToString() + "/" + MissionManager.instance.WeekSlider[index].maxValue.ToString();
+                break;
+            case InfoType.TodayMissionImage:
+                thisimage.color = (MissionManager.instance.TodaySlider[index].maxValue == UserInfoManager.Instance.userData.TodayMissionValue[index]) 
+                    ? MissionManager.instance.ColorList[1] : MissionManager.instance.ColorList[0];
+                    break;
+            case InfoType.WeekMissionImage:
+                thisimage.color = (MissionManager.instance.WeekSlider[index].maxValue == UserInfoManager.Instance.userData.WeekMissionValue[index])
+                    ? MissionManager.instance.ColorList[1] : MissionManager.instance.ColorList[0];
+                break;
+
         }
     }
 
