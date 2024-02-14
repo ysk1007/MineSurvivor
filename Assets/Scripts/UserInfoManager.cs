@@ -16,7 +16,16 @@ public class UserData //유저 데이터 클래스
     public int[] Equip_Artifacts; // 장착 하고 있는 아티팩트 넘버
     public string LastPlayTime; // 마지막 접속 시간
     public int Attendance; // 출석일
-    public bool TodayStamp;
+    public bool TodayStamp; // 금일 출석체크 여부
+
+    public int TodayProgress; // 금일 활약도
+    public int[] TodayMission; // 금일 미션 클리어 여부
+    public int[] TodayMissionValue; // 금일 미션 진행 상황
+    public int[] TodayReward; // 금일 미션 보상
+    
+    public int[] WeekMission; // 주간 미션 클리어 여부
+    public int[] WeekMissionValue; // 금일 미션 진행 상황
+    public int[] WeekReward; // 주간 미션 보상
 }
 
 public class UserInfoManager : MonoBehaviour
@@ -51,6 +60,16 @@ public class UserInfoManager : MonoBehaviour
 
     public void DataCreate() //데이터 생성
     {
+        userData.TodayMission = new int[6];
+        userData.TodayMissionValue = new int[6];
+        userData.TodayReward = new int[4];
+
+
+        userData.WeekMission = new int[5];
+        userData.WeekMissionValue = new int[5];
+        userData.WeekReward = new int[4];
+
+
         userData.Equip_Artifacts = new int[4];
         userData.LastPlayTime = KoreaDate();
         ES3.Save(keyName, userData);
@@ -82,6 +101,7 @@ public class UserInfoManager : MonoBehaviour
         if (userData.TodayStamp)
             return;
         userData.TodayStamp = true;
+        userData.TodayMission[0]++;
         userData.LastPlayTime = KoreaDate();
         DailyReward();
         ES3.Save(keyName, userData);
@@ -109,8 +129,10 @@ public class UserInfoManager : MonoBehaviour
             if (userData.TodayStamp) // 어제 보상을 받았을 경우
                 userData.Attendance++;
 
-            if (userData.Attendance > 6) // 주간 보상을 모두 받음
+            if (userData.Attendance > 6) // 출석 보상을 모두 받음
                 userData.Attendance = 0;
+
+            userData.TodayMission = new int[6]; // 일일 미션 초기화
 
             userData.TodayStamp = false;
             GuiManager.instance.DailyReward.newDay = true;
@@ -119,6 +141,8 @@ public class UserInfoManager : MonoBehaviour
         {
             Debug.Log("아직 입니다.");
         }
+
+        DataSave();
     }
 
     string KoreaDate()
