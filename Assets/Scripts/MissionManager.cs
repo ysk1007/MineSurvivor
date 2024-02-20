@@ -97,14 +97,18 @@ public class MissionManager : MonoBehaviour
 
     void RewardBtnSetting() // 보상 받기 버튼 활성화 여부 메소드
     {
+        bool reward = false;
         for (int i = 0; i < TodaySlider.Length; i++)
         {
             if (um.userData.TodayMission[i] == 1)
                 TodayMissionBtn[i].SetActive(false);
             else
             {
-                if (TodaySlider[i].maxValue == um.userData.TodayMissionValue[i])
+                if (TodaySlider[i].maxValue <= um.userData.TodayMissionValue[i])
+                {
+                    reward = true;
                     TodayMissionBtn[i].SetActive(true);
+                }
             }
         }
         for (int i = 0; i < WeekSlider.Length; i++)
@@ -114,10 +118,16 @@ public class MissionManager : MonoBehaviour
 
             else
             {
-                if (WeekSlider[i].maxValue == um.userData.WeekMissionValue[i])
+                if (WeekSlider[i].maxValue <= um.userData.WeekMissionValue[i])
+                {
+                    reward = true;
                     WeekMissionBtn[i].SetActive(true);
+                }
+                    
             }
         }
+
+        isReward = reward;
     }
 
     void ProgressRewardSetting() // 활약도 보상 체크 여부 메소드

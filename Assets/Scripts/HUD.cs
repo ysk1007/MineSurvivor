@@ -18,7 +18,8 @@ public class HUD : MonoBehaviour
         TodaySlider, WeekSlider, // 슬라이더
         TodayRewardSlider, WeekRewardSlider, // 보상 슬라이더
         TodayMissionValue, WeekMissionValue, // 텍스트 Value
-        TodayMissionImage, WeekMissionImage
+        TodayMissionImage, WeekMissionImage,
+        TodayClearFocus, WeekClearFocus
     }
 
     public int index;
@@ -99,9 +100,10 @@ public class HUD : MonoBehaviour
                 thisText.text = UserInfoManager.Instance.userData.UserName;
                 break;
             case InfoType.DailyNotice:
-                image.enabled = (UserInfoManager.Instance.userData.TodayStamp) ? false : true;
+                thisimage.enabled = (UserInfoManager.Instance.userData.TodayStamp) ? false : true;
                 break;
             case InfoType.MissionNotice:
+                thisimage.enabled = (MissionManager.instance.isReward) ? true : false;
                 break;
             case InfoType.TodayProgress:
                 TextMeshProUGUI.text = UserInfoManager.Instance.userData.TodayProgress.ToString();
@@ -128,12 +130,18 @@ public class HUD : MonoBehaviour
                 TextMeshProUGUI.text = UserInfoManager.Instance.userData.WeekMissionValue[index].ToString() + "/" + MissionManager.instance.WeekSlider[index].maxValue.ToString();
                 break;
             case InfoType.TodayMissionImage:
-                thisimage.color = (MissionManager.instance.TodaySlider[index].maxValue == UserInfoManager.Instance.userData.TodayMissionValue[index]) 
+                thisimage.color = (MissionManager.instance.TodaySlider[index].maxValue  <= UserInfoManager.Instance.userData.TodayMissionValue[index]) 
                     ? MissionManager.instance.ColorList[1] : MissionManager.instance.ColorList[0];
                     break;
             case InfoType.WeekMissionImage:
-                thisimage.color = (MissionManager.instance.WeekSlider[index].maxValue == UserInfoManager.Instance.userData.WeekMissionValue[index])
+                thisimage.color = (MissionManager.instance.WeekSlider[index].maxValue <= UserInfoManager.Instance.userData.WeekMissionValue[index])
                     ? MissionManager.instance.ColorList[1] : MissionManager.instance.ColorList[0];
+                break;
+            case InfoType.TodayClearFocus:
+                thisimage.enabled = (UserInfoManager.Instance.userData.TodayReward[index] == 1) ? true : false;
+                break;
+            case InfoType.WeekClearFocus:
+                thisimage.enabled = (UserInfoManager.Instance.userData.WeekReward[index] == 1) ? true : false;
                 break;
 
         }
