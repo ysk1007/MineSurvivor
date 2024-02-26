@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using TMPro;
 using UnityEditor.Experimental;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GuiManager : MonoBehaviour
@@ -350,5 +351,10 @@ public class GuiManager : MonoBehaviour
     public void PrintLog()
     {
         LogAnim.SetTrigger("Error");
+    }
+
+    public void GameEnterGame()
+    {
+        SceneManager.LoadScene("ingame_Scene");
     }
 }

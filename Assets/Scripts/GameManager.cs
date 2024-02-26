@@ -57,6 +57,12 @@ public class GameManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
     }
+
+    public void Start()
+    {
+        GameStart(UserInfoManager.Instance.userData.SelectCharacter);
+    }
+
     // Start is called before the first frame update
     public void GameStart(int id)
     {

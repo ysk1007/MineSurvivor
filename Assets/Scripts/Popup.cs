@@ -13,6 +13,7 @@ public class Popup : MonoBehaviour
     public Color[] color;
     public GameObject[] Object;
     public ArtifactData artifact;
+    DungeonData dungeon;
     public Button button;
     public void Open()
     {
@@ -62,6 +63,23 @@ public class Popup : MonoBehaviour
     {
         GuiManager.instance.ArtiUnEquip(artifact.ArtifactId);
         Close();
+    }
+
+    public void Dungeoninfo(GameObject gameObject)
+    {
+        if (!gameObject.GetComponent<Dungeon>().data)
+            return;
+        DungeonData data = gameObject.GetComponent<Dungeon>().data;
+        dungeon = data;
+        this.gameObject.GetComponentsInChildren<Text>()[0].text = data.DungeonName;
+        //RectTransform parent = this.gameObject.GetComponentsInChildren<HorizontalLayoutGroup>()[0].transform;
+        for (int i = 0; i < data.Enemyicons.Length; i++)
+        {
+            GameObject EnemyFrame = Instantiate(data.Frame, transform.position, Quaternion.identity);
+            EnemyFrame.GetComponentsInChildren<Image>()[3].sprite = data.Enemyicons[i];
+            EnemyFrame.transform.parent = this.gameObject.GetComponentsInChildren<HorizontalLayoutGroup>()[0].transform;
+            EnemyFrame.transform.localPosition = Vector3.zero;
+        }
     }
 
     public void OpenArti(GameObject gameObject)
