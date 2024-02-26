@@ -69,17 +69,37 @@ public class Popup : MonoBehaviour
     {
         if (!gameObject.GetComponent<Dungeon>().data)
             return;
+
+        GameObject parent = this.gameObject.GetComponentsInChildren<HorizontalLayoutGroup>()[0].gameObject;
+
+        // 자식 오브젝트가 있는지 확인
+        if (parent.transform.childCount > 0)
+        {
+            // 부모 오브젝트의 모든 자식을 삭제
+            foreach (Transform child in parent.transform)
+            {
+                GameObject.Destroy(child.gameObject);
+            }
+        }
+
         DungeonData data = gameObject.GetComponent<Dungeon>().data;
         dungeon = data;
         this.gameObject.GetComponentsInChildren<Text>()[0].text = data.DungeonName;
-        //RectTransform parent = this.gameObject.GetComponentsInChildren<HorizontalLayoutGroup>()[0].transform;
+
+        // 출현 하는 몬스터 초상화 배치
         for (int i = 0; i < data.Enemyicons.Length; i++)
         {
             GameObject EnemyFrame = Instantiate(data.Frame, transform.position, Quaternion.identity);
             EnemyFrame.GetComponentsInChildren<Image>()[3].sprite = data.Enemyicons[i];
-            EnemyFrame.transform.parent = this.gameObject.GetComponentsInChildren<HorizontalLayoutGroup>()[0].transform;
+            EnemyFrame.transform.SetParent(parent.transform, false);
             EnemyFrame.transform.localPosition = Vector3.zero;
         }
+
+        // 출현 하는 보스 초상화 배치
+        GameObject BossFrame = Instantiate(data.BossFrame, transform.position, Quaternion.identity);
+        BossFrame.GetComponentsInChildren<Image>()[3].sprite = data.Bossicon;
+        BossFrame.transform.SetParent(parent.transform, false);
+        BossFrame.transform.localPosition = Vector3.zero;
     }
 
     public void OpenArti(GameObject gameObject)

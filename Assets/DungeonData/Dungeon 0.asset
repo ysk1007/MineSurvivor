@@ -20,6 +20,7 @@ MonoBehaviour:
   BossSprite: {fileID: 21300000, guid: 234d407fb2f91cc4ba25d0d27ead3746, type: 3}
   Enemyicons:
   - {fileID: 21300000, guid: a6d0148b83d9928439f28ad8469bc207, type: 3}
+  - {fileID: 21300000, guid: 59c09398997990a4fa6c3f48ef4d3828, type: 3}
   Bossicon: {fileID: 21300000, guid: 253b6a6cc8c70634983fb99475a07625, type: 3}
   Frame: {fileID: 110805202383306188, guid: 409f9d8b2526a5a45b3bc6c90a50ed70, type: 3}
   BossFrame: {fileID: 5197852793522714074, guid: 19a0575331c334e4f842fed29e05b17d, type: 3}
