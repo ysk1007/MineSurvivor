@@ -51,27 +51,27 @@ public class Enemy : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!GameManager.instance.isLive)
-            return;
+        if (!GameManager.instance.isLive) return; // 게임이 진행 중이지 않으면 동작 중단
 
-        if (!isLive || anim.GetBool("Hit"))
-            return;
+        if (!isLive || anim.GetBool("Hit")) return; // 몬스터가 죽었거나 피격 상태라면 동작 중단
 
+        // 플레이어와 몬스터 간의 거리 계산
         float distanceToPlayer = Vector2.Distance(target.position, rigid.position);
 
-        if (distanceToPlayer <= range)
+        if (distanceToPlayer <= range)  // 플레이어가 사정거리 안에 들어오면
         {
-            agent.speed = 0f;
-            anim.SetFloat("RunState", 0f);
-            aiming = true;
+            agent.speed = 0f;               // 몬스터 이동 멈춤
+            anim.SetFloat("RunState", 0f);  // 달리기 애니메이션 정지
+            aiming = true;                  // 조준 상태 활성화
         }
-        else
+        else                        // 플레이어가 사정거리 밖에 있을 때
         {
-            agent.speed = speed;
-            aiming = false;
+            agent.speed = speed;        // 몬스터 이동 속도를 설정
+            aiming = false;             // 조준 상태 비활성화
 
             if (Targeting)
             {
+                // 몬스터 종류에 따라 달리기 애니메이션 속도 설정
                 float animspeed = 0;
                 switch (monsterType)
                 {
@@ -85,19 +85,19 @@ public class Enemy : MonoBehaviour
                         animspeed = 0.2f;
                         break;
                 }
-                anim.SetFloat("RunState", animspeed);
+                anim.SetFloat("RunState", animspeed); // 설정한 애니메이션 속도를 적용
             }
             else
             {
                 anim.SetFloat("RunState", 0f);
-            }
+            } // 타겟팅 중이 아니라면 달리기 애니메이션 정지
 
-            Vector2 dirVec = target.position - rigid.position; // 타겟을 향하는 방향
-            Dir = dirVec.x;
-            curDir = dirVec.normalized;
+            Vector2 dirVec = target.position - rigid.position;          // 타겟을 향하는 방향 계산
+            Dir = dirVec.x;                                             // x축 방향을 기준으로 타겟의 상대 위치 저장
+            curDir = dirVec.normalized;                                 // 방향 벡터를 정규화하여 방향 저장
 
-            agent.SetDestination(target.transform.position);
-            rigid.velocity = Vector2.zero;
+            agent.SetDestination(target.transform.position);            // 타겟 위치를 네비게이션 에이전트의 목적지로 설정
+            rigid.velocity = Vector2.zero;                              // 강체의 현재 속도를 0으로 설정
         }
     }
 

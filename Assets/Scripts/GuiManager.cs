@@ -261,10 +261,6 @@ public class GuiManager : MonoBehaviour
     {
         ChestResult.Clear();
         GetSpecialArti = false;
-        int[] normal = { 0 };
-        int[] rare = { 1 };
-        int[] unique = { 2 };
-        int[] legendary = { 3 };
         Random.Range(0, ArtifactDatas.Length);
 
         for (int i = 0; i < 10; i++) // 10¿¬Â÷
