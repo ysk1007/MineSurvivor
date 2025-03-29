@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 792059f0f08b1c749853f566003c7ea0, type: 3}
+  m_Name: Dungeon 0
+  m_EditorClassIdentifier: 
+  difficulty: 0
+  DungeonID: 0
+  DungeonName: "1. \uAD11\uC0B0 \uCD08\uC785"
+  DungeonDesc: 
+  MapBgSprite: {fileID: 21300000, guid: 99b4e46f8b9b4884d934ea64a9f3fdbf, type: 3}
+  BossSprite: {fileID: 21300000, guid: 234d407fb2f91cc4ba25d0d27ead3746, type: 3}
+  Enemyicons:
+  - {fileID: 21300000, guid: a6d0148b83d9928439f28ad8469bc207, type: 3}
+  - {fileID: 21300000, guid: 59c09398997990a4fa6c3f48ef4d3828, type: 3}
+  Bossicon: {fileID: 21300000, guid: 253b6a6cc8c70634983fb99475a07625, type: 3}
+  Frame: {fileID: 110805202383306188, guid: 409f9d8b2526a5a45b3bc6c90a50ed70, type: 3}
+  BossFrame: {fileID: 5197852793522714074, guid: 19a0575331c334e4f842fed29e05b17d, type: 3}
